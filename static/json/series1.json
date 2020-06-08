@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Febrero",
+        "y": 2,
+        "drilldown": "Febrero"
+    },
+    {
+        "name": "Marzo",
+        "y": 1,
+        "drilldown": "Marzo"
+    },
+    {
+        "name": "Abril",
+        "y": 3,
+        "drilldown": "Abril"
+    },
+    {
+        "name": "Mayo",
+        "y": 6,
+        "drilldown": "Mayo"
+    },
+    {
+        "name": "Junio",
+        "y": 1,
+        "drilldown": "Junio"
+    },
+    {
+        "name": "Julio",
+        "y": 5,
+        "drilldown": "Julio"
+    }
+]

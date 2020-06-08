@@ -1,0 +1,94 @@
+{% extends 'layout.html' %}
+
+{% block cardRecords %}
+<script>
+    $(document).ready(function () {
+        document.getElementById('enlaceImprimir').style.display = 'block';
+        document.getElementById('enlaceRegresar').style.display = 'block';
+    });
+</script>
+
+<div class="container pt-2" style="border: 1px solid black;">
+    <div class="row">
+        <div class="col col-4 p-2 text-left">
+            <img src="/static/img/logoHorizontalCecyteh.png" height="60px">
+        </div>
+        <div class="col col-4 p-2 text-center">
+            <img src="/static/img/seph.png" height="60px">
+        </div>
+        <div class="col col-4 p-2 text-right">
+            <img src="/static/img/Escudo_de_Armas.png" height="60px">
+        </div>
+    </div>
+    <div class="modal-header bg-primary justify-content-center">
+        <h5 class="modal-title text-white">VALE DE PRESTAMO DE LIBROS A PERSONAL DOCENTE Y ADMINISTRATIVO</h5>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col col-4 offset-4 text-center pb-4">
+                <h5>
+                    Responsable: <h6>{{ data.1 }}</h6>
+                </h5>
+            </div>
+            <table class="table table-bordered table-sm text-primary text-center">
+                <tr>
+                    <th colspan="5" style="border: 1px solid black;">Datos del libro</th>
+                </tr>
+                <tr>
+                    <th>No. Inventario</th>
+                    <th>Título</th>
+                    <th>Género</th>
+                    <th>Autor</th>
+                </tr>
+                <tr>
+                    <td>{{ data.2 }}</td>
+                    <td>{{ data.3 }}</td>
+                    <td>{{ data.5 }}</td>
+                    <td>{{ data.4 }}</td>
+                </tr>
+            </table>
+            <table class="table table-bordered table-sm text-primary text-center">
+                <tr>
+                    <th colspan="5" style="border: 1px solid black;">Fechas</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>Fecha de préstamo</th>
+                    <th></th>
+                    <th>Fecha de entrega</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>{{ data.6 }}</td>
+                    <td></td>
+                    <td>{{ data.7 }}</td>
+                    <td></td>
+                </tr>
+            </table>
+            <div class="col-12 text-center pb-4">
+                <div class="form-group">
+                    <small class="text-muted">Firmas</small>
+                </div>
+            </div>
+            <div class="col-4 text-center offset-1">
+                <p style="border-top: 1px solid rgb(100, 100, 100); color: rgb(100, 100, 100);">Firma del interesado</p>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-4 text-center">
+                <p style="border-top: 1px solid rgb(100, 100, 100); color: rgb(100, 100, 100);">Firma del bibliotecario
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-6 text-left">
+            <img src="/static/img/PC SINEMS.png" height="70px">
+        </div>
+        <div class="col col-6 text-right">
+            <img src="/static/img/direccion.png" height="70px">
+        </div>
+    </div>
+</div>
+
+{% endblock %}

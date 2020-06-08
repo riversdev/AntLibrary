@@ -1,0 +1,182 @@
+[
+    {
+        "name": "Febrero",
+        "id": "Febrero",
+        "data": [
+            [
+                "1 Semestre",
+                1
+            ],
+            [
+                "2 Semestre",
+                1
+            ],
+            [
+                "3 Semestre",
+                0
+            ],
+            [
+                "4 Semestre",
+                0
+            ],
+            [
+                "5 Semestre",
+                0
+            ],
+            [
+                "6 Semestre",
+                0
+            ]
+        ]
+    },
+    {
+        "name": "Marzo",
+        "id": "Marzo",
+        "data": [
+            [
+                "1 Semestre",
+                0
+            ],
+            [
+                "2 Semestre",
+                0
+            ],
+            [
+                "3 Semestre",
+                0
+            ],
+            [
+                "4 Semestre",
+                0
+            ],
+            [
+                "5 Semestre",
+                1
+            ],
+            [
+                "6 Semestre",
+                0
+            ]
+        ]
+    },
+    {
+        "name": "Abril",
+        "id": "Abril",
+        "data": [
+            [
+                "1 Semestre",
+                2
+            ],
+            [
+                "2 Semestre",
+                1
+            ],
+            [
+                "3 Semestre",
+                0
+            ],
+            [
+                "4 Semestre",
+                0
+            ],
+            [
+                "5 Semestre",
+                0
+            ],
+            [
+                "6 Semestre",
+                0
+            ]
+        ]
+    },
+    {
+        "name": "Mayo",
+        "id": "Mayo",
+        "data": [
+            [
+                "1 Semestre",
+                1
+            ],
+            [
+                "2 Semestre",
+                1
+            ],
+            [
+                "3 Semestre",
+                2
+            ],
+            [
+                "4 Semestre",
+                2
+            ],
+            [
+                "5 Semestre",
+                0
+            ],
+            [
+                "6 Semestre",
+                0
+            ]
+        ]
+    },
+    {
+        "name": "Junio",
+        "id": "Junio",
+        "data": [
+            [
+                "1 Semestre",
+                0
+            ],
+            [
+                "2 Semestre",
+                1
+            ],
+            [
+                "3 Semestre",
+                0
+            ],
+            [
+                "4 Semestre",
+                0
+            ],
+            [
+                "5 Semestre",
+                0
+            ],
+            [
+                "6 Semestre",
+                0
+            ]
+        ]
+    },
+    {
+        "name": "Julio",
+        "id": "Julio",
+        "data": [
+            [
+                "1 Semestre",
+                2
+            ],
+            [
+                "2 Semestre",
+                1
+            ],
+            [
+                "3 Semestre",
+                1
+            ],
+            [
+                "4 Semestre",
+                0
+            ],
+            [
+                "5 Semestre",
+                0
+            ],
+            [
+                "6 Semestre",
+                1
+            ]
+        ]
+    }
+]

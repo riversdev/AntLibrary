@@ -1,0 +1,109 @@
+{% extends 'layout.html' %}
+
+{% block cardRecords %}
+<script>
+    $(document).ready(function () {
+        document.getElementById('enlaceImprimir').style.display = 'block';
+        document.getElementById('enlaceRegresar').style.display = 'block';
+    });
+</script>
+
+<div class="container pt-2" style="border: 1px solid black;">
+    <div class="row">
+        <div class="col col-4 p-2 text-left">
+            <img src="/static/img/logoHorizontalCecyteh.png" height="60px">
+        </div>
+        <div class="col col-4 p-2 text-center">
+            <img src="/static/img/seph.png" height="60px">
+        </div>
+        <div class="col col-4 p-2 text-right">
+            <img src="/static/img/Escudo_de_Armas.png" height="60px">
+        </div>
+    </div>
+    <div class="modal-header bg-primary justify-content-center">
+        <h5 class="modal-title text-white">VALE DE PRESTAMO DE PROYECTOR</h5>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col col-4 offset-4 text-center pb-4">
+                <h5>
+                    Responsable: <h6>{{ data.3 }}({{ data.2 }})</h6>
+                </h5>
+            </div>
+            <div class="col-12 text-center">
+                <table class="table table-bordered table-sm text-primary">
+                    <thead>
+                        <tr>
+                            <th class="border-dark" colspan="5">
+                                <h6>Descripción del préstamo</h6>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="border-dark">Descripción</th>
+                            <th class="border-dark">Actividad</th>
+                            <th class="border-dark">Semestre</th>
+                            <th class="border-dark">Grupo</th>
+                            <th class="border-dark">Aula</th>
+                        </tr>
+                        <tr>
+                            <td>{{ data.1 }}</td>
+                            <td>{{ data.4 }}</td>
+                            <td>{{ data.5 }}</td>
+                            <td>{{ data.6 }}</td>
+                            <td>{{ data.7 }}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <table class="table table-bordered table-sm text-primary">
+                    <tr>
+                        <th class="border-dark">Fecha de préstamo</th>
+                        <th class="border-dark">Horario de préstamo</th>
+                        <th class="border-dark">Horario de entrega</th>
+                        <th class="border-dark">Número de proyector</th>
+                    </tr>
+                    <tr>
+                        <td>{{ data.8 }}</td>
+                        <td>{{ data.9 }}</td>
+                        <td>{{ data.10 }}</td>
+                        <td>{{ data.11 }}</td>
+                    </tr>
+                </table>
+                <table class="table table-bordered table-sm text-primary">
+                    <tr>
+                        <th class="border-dark">Componentes</th>
+                    </tr>
+                    <tr>
+                        <td>{{ data.12 }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-12 text-center pb-4">
+                <div class="form-group">
+                    <small class="text-muted">Firmas</small>
+                </div>
+            </div>
+            <div class="col-4 text-center offset-1">
+                <p style="border-top: 1px solid rgb(100, 100, 100); color: rgb(100, 100, 100);">Firma del responsable
+                </p>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-4 text-center">
+                <p style="border-top: 1px solid rgb(100, 100, 100); color: rgb(100, 100, 100);">Firma del bibliotecario
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-6 text-left">
+            <img src="/static/img/PC SINEMS.png" height="70px">
+        </div>
+        <div class="col col-6 text-right">
+            <img src="/static/img/direccion.png" height="70px">
+        </div>
+    </div>
+</div>
+
+{% endblock %}

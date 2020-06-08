@@ -1,0 +1,272 @@
+{% extends "layout.html" %}
+
+{% block navCards %}
+<ul class="nav navbar-expand-lg ml-auto" id="myTab" role="tablist">
+    <li class="nav-item">
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalCardPregenerated">Generar
+            tarjeta</button>
+    </li>
+</ul>
+{% endblock %}
+
+{% block cards %}
+<!-- MODAL PRE GENERAR TARJETA -->
+<div class="modal fade" id="modalCardPregenerated" tabindex="-1" role="dialog" aria-labelledby="modalCardPregenerated"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-monospace text-white" id="modalCardPregenerated">DATOS REQUERIDOS
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="text-white" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/addCardMobiliario" method="POST">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col col-10 offset-1">
+                            <div class="form-group">
+                                <input type="text" name="nameResponsable" id="nameResponsable"
+                                    class="form-control text-center" placeholder="Nombre del responsable" required
+                                    pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+' data-toggle="tooltip" data-placement="top"
+                                    title="Nombre del responsable" style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col col-8 offset-2">
+                            <div class="form-group">
+                                <input type="text" name="areaResponsable" id="areaResponsable"
+                                    class="form-control text-center" placeholder="Area del responsable" required
+                                    pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+' data-toggle="tooltip" data-placement="top"
+                                    title="Area del responsable" style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col col-6 offset-3">
+                            <div class="form-group">
+                                <select class="custom-select form-control text-center text-primary" id="DF" name="DF"
+                                    required data-toggle="tooltip" data-placement="top"
+                                    title="Ubicación para el préstamo" style="background-color:#F2F2F2;">
+                                    <option value="">Tipo de préstamo...</option>
+                                    <option value="Dentro del plantel">Dentro del plantel</option>
+                                    <option value="Fuera del plantel">Fuera del plantel</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Generar tarjeta</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="card-body table-responsive">
+    <H3 class="text-center">PRÉSTAMO DE MOBILIARIO</H3>
+    <table id="tableTempMobiliario" class="order-column display hover row-border nowrap compact text-primary"
+        style="width:100%">
+        <thead>
+            <tr>
+                <th>Cantidad</th>
+                <th>Descripción</th>
+                <th>No. Inventario</th>
+                <th>Marca</th>
+                <th>Fecha</th>
+                <th class="text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for x in prestamo %}
+            <tr>
+                <td> {{ x.0 }} </td>
+                <td> {{ x.1 }} </td>
+                <td> {{ x.2 }} </td>
+                <td> {{ x.3 }} </td>
+                <td> {{ x.4 }} </td>
+                <td class="text-center">
+                    <button data-toggle="modal" class="btn" data-target="#modalEditTempMobiliario{{ x.2 }}">
+                        <i class="fas fa-edit text-primary"></i>
+                    </button>
+                    <button class="btn" onclick="deleteRecordTCM('{{ x.2 }}','{{ x.1 }}','{{ x.3 }}');">
+                        <i class="fas fa-trash-alt text-primary"></i>
+                    </button>
+                </td>
+            </tr>
+            <!-- Modal Edit Card Mobiliario -->
+            <div class="modal fade" id="modalEditTempMobiliario{{ x.2 }}" tabindex="-1" role="dialog"
+                aria-labelledby="modalEditTempMobiliario" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary">
+                            <h5 class="modal-title text-white" id="modalEditTempMobiliario">
+                                EDITAR ELEMENTO
+                            </h5>
+                            <button onclick="cerrar();" type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                                <span class="text-white" aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="/updateCardMobiliarioTemp/{{ x.2 }}" method="POST">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <input type="hidden" name="cantidad" id="cantidad" value="1">
+                                            <input type="text" class="form-control text-center" value="1"
+                                                data-toggle="tooltip" data-placement="top" title="Cantidad" disabled
+                                                style="background-color: #E6E6E6;">
+                                        </div>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="form-group">
+                                            <select class="custom-select form-control text-center" id="descriptionTempM"
+                                                name="descriptionTempM" data-toggle="tooltip" data-placement="top"
+                                                title="Descripción" required style="background-color: #F2F2F2;">
+                                                <option value="{{ x.1 }}">{{ x.1 }}</option>
+                                                <option value="Mesa">Mesa</option>
+                                                <option value="Silla">Silla</option>
+                                                <option value="Guitarra">Guitarra</option>
+                                                <option value="Pantalla">Pantalla</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <input type="hidden" name="code" id="code" value="{{ x.2 }}">
+                                            <input type="text" class="form-control text-center" disabled
+                                                value="{{ x.2 }}" data-toggle="tooltip" data-placement="top"
+                                                title="No. Inventario" style="background-color: #E6E6E6;">
+                                        </div>
+                                    </div>
+                                    <div class="col-5 offset-1">
+                                        <div class="form-group">
+                                            <input type="text" name="marca" id="marca" class="form-control text-center"
+                                                placeholder="Marca" pattern="[a-zA-Z0-9 áéíóú.-]+" required
+                                                value="{{ x.3 }}" data-toggle="tooltip" data-placement="top"
+                                                title="Marca" style="background-color: #F2F2F2;">
+                                        </div>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="form-group">
+                                            <input type="date" value="{{ x.4 }}" name="dateLoan" id="dateLoan"
+                                                class="form-control text-center" required
+                                                style="background-color: #F2F2F2;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal"
+                                    onclick="cerrar();">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Cantidad</th>
+                <th>Descripción</th>
+                <th>No. Inventario</th>
+                <th>Marca</th>
+                <th>Fecha</th>
+                <th class="text-center">Acciones</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div class="container">
+    <form action="/addTableTemp" method="POST">
+        <p class="text-muted text-center">Nuevo elemento</p>
+        <hr class="bg-primary">
+        <div class="row justify-content-center text-center align-items-center">
+            <div class="col-1">
+                <input type="hidden" name="cantidad" id="cantidad" value="1">
+                <input type="text" class="form-control text-center" value="1" data-toggle="tooltip" data-placement="top"
+                    title="Cantidad" disabled style="background-color: #E6E6E6;">
+            </div>
+            <div class="col-3">
+                <select class="custom-select form-control text-center" id="description" name="description"
+                    data-toggle="tooltip" data-placement="top" title="Descripción" required
+                    style="background-color: #F2F2F2;">
+                    <option value="">Descripción</option>
+                    <option value="Mesa">Mesa</option>
+                    <option value="Silla">Silla</option>
+                    <option value="Guitarra">Guitarra</option>
+                    <option value="Pantalla">Pantalla</option>
+                </select>
+            </div>
+            <div class="col-3">
+                <input type="text" name="code" id="code" class="form-control text-center" placeholder="No.Inventario"
+                    pattern='[a-zA-Z0-9 .-"#]+' style="background-color:#F2F2F2;" required>
+            </div>
+            <div class="col-2">
+                <input type="text" name="marca" id="marca" class="form-control text-center" placeholder="Marca"
+                    pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+' style="background-color:#F2F2F2;" required>
+            </div>
+            <div class="col-1 text-center">
+                <button type="submit" class="btn btn-primary btn-sm">AGREGAR</button>
+            </div>
+            <div class="col-1 text-center">
+                <button class="btn btn-primary btn-sm" onclick="javascript:window.location.reload();">REFRESCAR</button>
+            </div>
+        </div>
+        <hr class="bg-primary">
+    </form>
+</div>
+
+<!-- SOCKET IO 
+        <script>
+            const socket = io();
+
+            socket.on('message', function (msg, msg2, msg3, msg4, msg5) {
+                $('#messages').append('<tr><td>' + msg + '</td><td>' + msg2 + '</td><td>' + msg3 + '</td><td>' + msg4 + '</td><td>' + msg5 + '</td></tr>')
+            })
+
+            $('#send').on('click', function () {
+                socket.send($('#cantidad').val(), $('#description').val(), $('#code').val(), $('#marca').val(), $('#dateLoan').val());
+                $('#description').val('');
+                $('#code').val('');
+                $('#marca').val('');
+            })
+
+        </script>-->
+
+
+<!--
+<div id="padre" class="container pb-5">
+    <div class="row justify-content-center text-center align-items-center pb-5">
+        <div class="col-3 p-5">
+            <i class="fas fa-7x fa-book" data-toggle="modal" data-target="#modalTypeBook" data-dismiss="modal"></i>
+            <small id="" class="form-text text-muted">
+                Libro
+            </small>
+        </div>
+        <div class="col-3 p-5">
+            <i class="fas fa-7x fa-chair" data-toggle="modal" data-target="#modalTypeTable" data-dismiss="modal"></i>
+            <small id="" class="form-text text-muted">
+                Mueble
+            </small>
+        </div>
+        <div class="col-3 p-5">
+            <i class="fas fa-7x fa-external-link-alt" onclick=""></i>
+            <small id="" class="form-text text-muted">
+                Proyector
+            </small>
+        </div>
+        <div class="col-3 p-5">
+            <i class="fas fa-7x fa-users" onclick=""></i>
+            <small id="" class="form-text text-muted">
+                Audiovisual
+            </small>
+        </div>
+    </div>
+</div> -->
+
+{% endblock %}

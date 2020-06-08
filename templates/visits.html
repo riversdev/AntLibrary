@@ -1,0 +1,370 @@
+{% extends "layout.html" %}
+
+{% block navVisits %}
+<ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+        <button class="btn btn-sm btn-outline-light" data-toggle="modal" data-target="#modalAddVisitor">
+            Nuevo
+        </button>
+    </li>
+</ul>
+{% endblock %}
+
+{% block visits %}
+<script>
+    $(document).ready(function () {
+        document.getElementById('linkNavVisits').className = 'active';
+    });
+</script>
+<!-- Modal Add Visitor -->
+<div class="modal fade" id="modalAddVisitor" tabindex="-1" role="dialog" aria-labelledby="modalAddVisitor"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white" id="modalAddVisitor">NUEVA VISITA</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="text-white" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/addVisitor" method="POST">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-3">
+                            <input type="date" name="dateInput" id="dateInput" class="form-control"
+                                value="{{ fechaActual }}" required style="background-color:#F2F2F2;">
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                <select class="custom-select form-control" id="grade" name="grade" data-toggle="tooltip"
+                                    data-placement="top" title="Semestre" required style="background-color:#F2F2F2;">
+                                    <option value="">?</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                <select class="custom-select form-control" id="group" name="group" data-toggle="tooltip"
+                                    data-placement="top" title="Grupo" required style="background-color:#F2F2F2;">
+                                    <option value="">?</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                    <option value="E">E</option>
+                                    <option value="F">F</option>
+                                    <option value="G">G</option>
+                                    <option value="H">H</option>
+                                    <option value="I">I</option>
+                                    <option value="J">J</option>
+                                    <option value="K">K</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="form-group">
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Nombre"
+                                    required pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+' data-toggle="tooltip"
+                                    data-placement="top" title="Nombre" style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <select class="custom-select form-control" id="asunto" name="asunto"
+                                    data-toggle="tooltip" data-placement="top" title="Asunto" required
+                                    style="background-color: #F2F2F2;">
+                                    <option value="">Asunto</option>
+                                    <option>Sala de lectura</option>
+                                    <option>PC</option>
+                                    <option>Taller</option>
+                                    <option>Actividad externa</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <input type="text" name="matricula" id="matricula" class="form-control"
+                                    placeholder="Matricula" required pattern='[0-9]+' data-toggle="tooltip"
+                                    data-placement="top" title="Matricula" style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <select class="custom-select form-control" id="carrera" name="carrera" data-toggle="tooltip"
+                                data-placement="top" title="Carrera" required style="background-color: #f2f2f2;">
+                                <option value="">Carrera</option>
+                                <option value="Programacion">Programación</option>
+                                <option value="Electricidad">Electricidad</option>
+                                <option value="Soporte">Soporte y mantenimiento de equipo de computo
+                                </option>
+                                <option value="Alimentos">Alimentos y bebidas</option>
+                                <option value="Procesos">Procesos de gestión administrativa</option>
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <select class="custom-select form-control" id="sexo" name="sexo" data-toggle="tooltip"
+                                data-placement="top" title="Sexo" required style="background-color: #F2F2F2;">
+                                <option value="">Sexo</option>
+                                <option value="Hombre">Hombre</option>
+                                <option value="Mujer">Mujer</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ALL CONTENT -->
+<div class="pt-3">
+    <div class="container">
+        <div class="row">
+            <div class="col col-12 col-lg-4 pt-5">
+                <ul class="list-group pt-2">
+                    <li class="list-group-item text-center active">INFORMACIÓN</li>
+                    <li class="list-group-item text-justify">
+                        El módulo de visitas muestra un listado de todas las
+                        visitas al área de biblioteca contenidos en una tabla que permite ordenarlas de acuerdo a
+                        la
+                        información que se requiera, asi como una barra de búsqueda rápida en la parte
+                        superior
+                        derecha
+                        y la paginación permitida en la parte inferior derecha.
+                    </li>
+                    <li class="list-group-item text-justify text-dark">
+                        En la barra de navegación existe un boton (Nuevo) que permite agregar una nueva visita.
+                    </li>
+                    <li class="list-group-item text-justify text-dark">
+                        La última columna de la tabla contiene las acciones permitidas por registro seleccionado (editar
+                        o eliminar la visita).
+                    </li>
+                </ul>
+            </div>
+
+            <!-- CAROUSEL -->
+            <div class="col col-12 col-lg-8 pl-5">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="{{ url_for('static', filename='img/chess2.png') }}" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ url_for('static', filename='img/library5.png') }}" class="d-block w-100"
+                                alt="...">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ url_for('static', filename='img/pc.png') }}" class="d-block w-100"
+                                alt="...">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ url_for('static', filename='img/guitar2.png') }}" class="d-block w-100"
+                                alt="...">
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card bg-primary text-white"
+        onmouseover="javascript:document.getElementById('navGeneral').className = 'navbar navbar-expand-lg navbar-dark bg-primary';"
+        onmouseout="javascript:document.getElementById('navGeneral').className = 'navbar navbar-expand-lg navbar-dark bg-primary sticky-top';">
+        <div class="card-body table-responsive">
+            <table id="tableVisits" class="order-column display hover row-border nowrap compact" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Registro</th>
+                        <th>Fecha</th>
+                        <th>Grado</th>
+                        <th>Grupo</th>
+                        <th>Nombre</th>
+                        <th>Actividad</th>
+                        <th>Matricula</th>
+                        <th>Carrera</th>
+                        <th>Sexo</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for x in visitors %}
+                    <tr class="text-primary">
+                        <td> {{ x.0 }} </td>
+                        <td> {{ x.1 }} </td>
+                        <td class="text-right"> {{ x.2 }} </td>
+                        <td> {{ x.3 }} </td>
+                        <td> {{ x.4 }} </td>
+                        <td> {{ x.5 }} </td>
+                        <td> {{ x.6 }} </td>
+                        <td> {{ x.7 }} </td>
+                        <td> {{ x.8 }} </td>
+                        <td class="text-center">
+                            <button data-toggle="modal" class="btn" data-target="#modalEditVisitor{{ x.0 }}"><i
+                                    class="fas fa-edit text-primary"></i></button>
+                            <button class="btn" onclick="deleteVisitor('{{ x.0 }}','{{ x.4 }}');"><i
+                                    class="fas fa-trash-alt text-primary"></i></button>
+                        </td>
+                    </tr>
+                    <!-- Modal Edit Visitor -->
+                    <div class="modal fade" id="modalEditVisitor{{ x.0 }}" tabindex="-1" role="dialog"
+                        aria-labelledby="modalEditVisitor{{ x.0 }}" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary">
+                                    <h5 class="modal-title text-white" id="modalEditVisitor{{ x.0 }}">EDITAR VISITA</h5>
+                                    <button onclick="cerrar();" type="button" class="close" data-dismiss="modal"
+                                        aria-label="Close">
+                                        <span class="text-white" aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form action="/editVisitor/{{ x.0 }}" method="POST">
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <input type="date" name="dateInput" id="dateInput" class="form-control"
+                                                    required value="{{ x.1 }}" style="background-color: #E6E6E6;">
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="form-group">
+                                                    <select class="custom-select form-control" id="grade" name="grade"
+                                                        data-toggle="tooltip" data-placement="top" title="Semestre"
+                                                        required style="background-color: #F2F2F2;">
+                                                        <option value="{{ x.2 }}">{{ x.2 }}</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="form-group">
+                                                    <select class="custom-select form-control" id="group" name="group"
+                                                        data-toggle="tooltip" data-placement="top" title="Grupo"
+                                                        required style="background-color: #F2F2F2;">
+                                                        <option value="{{ x.3 }}">{{ x.3 }}</option>
+                                                        <option value="A">A</option>
+                                                        <option value="B">B</option>
+                                                        <option value="C">C</option>
+                                                        <option value="D">D</option>
+                                                        <option value="E">E</option>
+                                                        <option value="F">F</option>
+                                                        <option value="G">G</option>
+                                                        <option value="H">H</option>
+                                                        <option value="I">I</option>
+                                                        <option value="J">J</option>
+                                                        <option value="K">K</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-5">
+                                                <div class="form-group">
+                                                    <input type="text" name="name" id="name" class="form-control"
+                                                        placeholder="Nombre" required
+                                                        pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+' data-toggle="tooltip"
+                                                        data-placement="top" title="Nombre"
+                                                        style="background-color:#F2F2F2;" value="{{ x.4 }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="form-group">
+                                                    <select class="custom-select form-control" id="asunto" name="asunto"
+                                                        data-toggle="tooltip" data-placement="top" title="Asunto"
+                                                        required style="background-color: #F2F2F2;">
+                                                        <option value="{{ x.5 }}">{{ x.5 }}</option>
+                                                        <option>Sala de lectura</option>
+                                                        <option>PC</option>
+                                                        <option>Taller</option>
+                                                        <option>Actividad externa</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="form-group">
+                                                    <input type="text" name="matricula" id="matricula"
+                                                        class="form-control" placeholder="Matricula" required
+                                                        pattern='[0-9]+' data-toggle="tooltip" data-placement="top"
+                                                        title="Matricula" style="background-color:#F2F2F2;"
+                                                        value="{{ x.6 }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <select class="custom-select form-control" id="carrera" name="carrera"
+                                                    data-toggle="tooltip" data-placement="top" title="Carrera" required
+                                                    style="background-color: #F2F2F2;">
+                                                    <option value="{{ x.7 }}">{{ x.7 }}</option>
+                                                    <option value="Programacion">Programación</option>
+                                                    <option value="Electricidad">Electricidad</option>
+                                                    <option value="Soporte">Soporte y mantenimiento de equipo de computo
+                                                    </option>
+                                                    <option value="Alimentos">Alimentos y bebidas</option>
+                                                    <option value="Procesos">Procesos de gestión administrativa</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-3">
+                                                <select class="custom-select form-control" id="sexo" name="sexo"
+                                                    data-toggle="tooltip" data-placement="top" title="Sexo" required
+                                                    style="background-color: #F2F2F2;">
+                                                    <option value="{{ x.8 }}">{{ x.8 }}</option>
+                                                    <option value="Hombre">Hombre</option>
+                                                    <option value="Mujer">Mujer</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal"
+                                            onclick="cerrar();">Cerrar</button>
+                                        <button type="submit" class="btn btn-primary">Guardar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Registro</th>
+                        <th>Fecha</th>
+                        <th>Grado</th>
+                        <th>Grupo</th>
+                        <th>Nombre</th>
+                        <th>Actividad</th>
+                        <th>Matricula</th>
+                        <th>Carrera</th>
+                        <th>Sexo</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

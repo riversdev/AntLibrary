@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- TITLE -->
+    <title>Ant Website</title>
+    <!-- FAVICON -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/x-icon">
+    <!-- BOOTSWATCH LUX -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <!-- Font Awesome 5.9.0 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/all.css') }}">
+    <!-- Alertify 1.11.4 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='alertifyjs/css/alertify.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='alertifyjs/css/themes/default.css') }}">
+
+    <!-- CUSTOM JS -->
+    <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='font-awesome/js/all.js') }}"></script>
+    <script src="{{ url_for('static', filename='alertifyjs/alertify.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            document.body.style.background = 'url("{{ url_for("static", filename="img/chess.png") }}") no-repeat';
+            document.body.style.backgroundAttachment = 'fixed';
+            document.body.style.backgroundSize = 'cover';
+        });
+        // LOGIN
+        function callMsg(category, msg) {
+            if (category == 'success') {
+                alertify.success(msg);
+            }
+            if (category == 'error') {
+                alertify.error(msg);
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+    <!-- MESSAGES -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <script type="text/javascript" async="async">
+        callMsg('{{ category }}', '{{ message }}');
+    </script>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <!-- LOGIN -->
+    <div class="container align-items-center"
+        style="min-height: 100vh; min-height: 100vh; display: flex; justify-content: center; align-items: center; vertical-align: middle; text-align: center;">
+        <div class="row justify-content-center">
+            <!-- FIRST COLUMN -->
+            <div class="col-lg-8 col-xm-6 d-lg-block align-self-center">
+                <div class="row">
+                    <div class="col medio">
+                        <h1 class="display-3 text-white">
+                            <STRONG>
+                                BIBLIOTECA
+                            </STRONG>
+                        </h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col medio">
+                        <h1 class="display-5 text-white">
+                            Si no sabes que ponerte, puedes ponerte a leer.
+                        </h1>
+                        <small class="text-white">www.ellibrototal.com</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECOND COLUMN -->
+            <div class="col-lg-4 col-xm-6 justify-content-center"
+                style="padding: 1rem; display:flex;">
+                <div class="card text-center bg-primary">
+                    <div class="card-body">
+                        <form action="/logging_user" method="POST">
+                            <div class="form-group">
+                                <h3 class="text-white"> Hola jefe de biblioteca </h3>
+                                <p class="text-white">Ingresa tus datos...</p>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control" id="txtName" name="txtName"
+                                    placeholder="Usuario" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control form-control" id="txtPass" name="txtPass"
+                                    placeholder="Contraseña" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control form-control" id="txtConfPass"
+                                    name="txtConfPass" placeholder="Confirma tu contraseña" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-outline-light btn-block">
+                                    Ingresar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

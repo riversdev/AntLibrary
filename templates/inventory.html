@@ -1,0 +1,1923 @@
+{% extends "layout.html" %}
+
+{% block navInventoryTwo %}
+<script>
+    $(document).ready(function () {
+        document.getElementById('linkNavInventory').className = 'active';
+    });
+</script>
+<!-- SECONDARY NAV -->
+<ul class="nav nav-tabs navbar-expand-lg justify-content-center bg-dark" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active text-secondary text-monospace" id="book-tab" data-toggle="tab" href="#book" role="tab"
+            aria-controls="book" aria-selected="true">Libros</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-secondary text-monospace" id="biblioteca-tab" data-toggle="tab" href="#biblioteca"
+            role="tab" aria-controls="biblioteca" aria-selected="false">Biblioteca</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-secondary text-monospace" id="audiovisualRoom-tab" data-toggle="tab"
+            href="#audiovisualRoom" role="tab" aria-controls="audiovisualRoom" aria-selected="false">Sala
+            audiovisual</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-secondary text-monospace" id="projectors-tab" data-toggle="tab" href="#projectors"
+            role="tab" aria-controls="projectors" aria-selected="false">Proyectores</a>
+    </li>
+</ul>
+{% endblock %}
+
+{% block navInventory %}
+<ul class="nav navbar-expand-lg ml-auto" id="myTab2" role="tablist">
+    <li class="nav-item">
+        <!-- Example single danger button -->
+        <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-outline-light dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Nuevo
+            </button>
+            <div class="dropdown-menu">
+                <button class="dropdown-item" data-toggle="modal" data-target="#modalAddBook">Libro</button>
+                <button class="dropdown-item" data-toggle="modal" data-target="#modalAddProjector">Proyector</button>
+                <button class="dropdown-item" data-toggle="modal" data-target="#modalAddLibrary">Biblioteca</button>
+                <button class="dropdown-item" data-toggle="modal" data-target="#modalAddAudiovisual">Audiovisual
+                    room</button>
+            </div>
+        </div>
+    </li>
+</ul>
+{% endblock %}
+
+{% block inventory %}
+
+<!-- Modal Add Book -->
+<div class="modal fade" id="modalAddBook" tabindex="-1" role="dialog" aria-labelledby="modalAddBook" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-monospace text-white" id="modalAddBook">NUEVO LIBRO...</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+            <form action="/addBook" method="POST">
+                <div class="modal-body bg-secondary">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" placeholder="Code" class="form-control" id="codeBook" name="codeBook"
+                                    required pattern="[a-zA-Z0-9 -]+" data-toggle="tooltip" data-placement="top"
+                                    title="No. Inventario" style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="form-group">
+                                <input type="text" name="nameBook" id="nameBook" class="form-control"
+                                    placeholder="Título" required pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                    data-toggle="tooltip" data-placement="top" title="Título"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" name="authorBook" id="authorBook" class="form-control"
+                                    placeholder="Autor" required pattern="[a-zA-Z áéíóúÁÉÍÓÚ.]+" data-toggle="tooltip"
+                                    data-placement="top" title="Autor" style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" name="editorialBook" id="editorialBook" class="form-control"
+                                    placeholder="Editorial" required pattern='[a-zA-Z0-9 .-"#áéíóúÁÉÍÓÚ¡!¿?]+'
+                                    data-toggle="tooltip" data-placement="top" title="Editorial"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" name="unidadMedida" id="unidadMedida" class="form-control"
+                                    placeholder="Unidad de medida" required pattern='[a-zA-Z0-9 .-"#áéíóúÁÉÍÓÚ¡!¿?]+'
+                                    data-toggle="tooltip" data-placement="top" title="Unidad de medida"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" name="materia" id="materia" class="form-control"
+                                    placeholder="Materia" required pattern='[a-zA-Z0-9 .-"#áéíóúÁÉÍÓÚ¡!¿?]+'
+                                    data-toggle="tooltip" data-placement="top" title="Materia"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" name="campoConocim" id="campoConocim" class="form-control"
+                                    placeholder="Campo de conocimiento" required
+                                    pattern='[a-zA-Z0-9 .-"#áéíóúÁÉÍÓÚ¡!¿?]+' data-toggle="tooltip" data-placement="top"
+                                    title="Campo de conocimiento" style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" name="estadoFisico" id="estadoFisico" class="form-control"
+                                    placeholder="Estado físico" required pattern='[a-zA-Z0-9 .-"#áéíóúÁÉÍÓÚ¡!¿?]+'
+                                    data-toggle="tooltip" data-placement="top" title="Estado físico"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" name="responsable" id="responsable" class="form-control"
+                                    placeholder="Responsable" required pattern='a-zA-Z0-9 .-"#áéíóúÁÉÍÓÚ¡!¿?'
+                                    data-toggle="tooltip" data-placement="top" title="Responsable"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group text-center">
+                                <input type="number" name="yearEdition" id="yearEdition" class="form-control" required
+                                    min="1950" max="2025" data-toggle="tooltip" data-placement="top"
+                                    title="Año de edición" style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="input-group mb-3 col-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1" style="background-color:#E6E6E6;">Fecha
+                                    de ingreso</span>
+                            </div>
+                            <input type="date" value="{{ fechaActual }}" name="dateInput" id="dateInput"
+                                class="form-control" required min="2000-01-01" max="2020-12-31"
+                                style="background-color:#F2F2F2;">
+                        </div>
+                        <div class="input-group col-12">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="background-color:#E6E6E6;">Observaciones</span>
+                            </div>
+                            <textarea name="observations" id="observations" class="form-control"
+                                aria-label="With textarea" style="background-color:#F2F2F2;"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add Projector -->
+<div class="modal fade" id="modalAddProjector" tabindex="-1" role="dialog" aria-labelledby="modalAddProjector"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-monospace text-white" id="modalAddProjector">NUEVO PROYECTOR...</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+            <form action="/addProjector" method="POST">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" placeholder="Code" class="form-control" id="codeProjector"
+                                    name="codeProjector" required pattern="[a-zA-Z0-9 -]+" data-toggle="tooltip"
+                                    data-placement="top" title="No. Inventario" style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="form-group">
+                                <input type="text" name="descriptionProjector" id="descriptionProjector"
+                                    class="form-control" placeholder="Descripción" required
+                                    pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+' data-toggle="tooltip" data-placement="top"
+                                    title="Descripción" style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="text" name="serieProjector" id="serieProjector" class="form-control"
+                                    placeholder="Serie" required pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                    data-toggle="tooltip" data-placement="top" title="Serie"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="text" name="marcaProjector" id="marcaProjector" class="form-control"
+                                    placeholder="Marca" required pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                    data-toggle="tooltip" data-placement="top" title="Marca"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="text" name="modelProjector" id="modelProjector" class="form-control"
+                                    placeholder="Modelo" required pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                    data-toggle="tooltip" data-placement="top" title="Modelo"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="text" name="propertyProjector" id="propertyProjector" class="form-control"
+                                    placeholder="Propiedad" required pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                    data-toggle="tooltip" data-placement="top" title="Propiedad"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add Library -->
+<div class="modal fade" id="modalAddLibrary" tabindex="-1" role="dialog" aria-labelledby="modalAddLibrary"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-monospace text-white" id="modalAddLibrary">NUEVO ELEMENTO DE BIBLIOTECA...
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="text-white" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/addLibrary" method="POST">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" placeholder="Code" class="form-control" id="codeLibrary"
+                                    name="codeLibrary" required pattern="[a-zA-Z0-9 -]+" data-toggle="tooltip"
+                                    data-placement="top" title="No. Inventario" style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="form-group">
+                                <input type="text" name="descriptionLibrary" id="descriptionLibrary"
+                                    class="form-control" placeholder="Descripción" required
+                                    pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+' data-toggle="tooltip" data-placement="top"
+                                    title="Descripción" style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="text" name="serieLibrary" id="serieLibrary" class="form-control"
+                                    placeholder="Serie" required pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                    data-toggle="tooltip" data-placement="top" title="Serie"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="text" name="marcaLibrary" id="marcaLibrary" class="form-control"
+                                    placeholder="Marca" required pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                    data-toggle="tooltip" data-placement="top" title="Marca"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="text" name="modelLibrary" id="modelLibrary" class="form-control"
+                                    placeholder="Modelo" required pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                    data-toggle="tooltip" data-placement="top" title="Modelo"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="text" name="propertyLibrary" id="propertyLibrary" class="form-control"
+                                    placeholder="Propiedad" required pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                    data-toggle="tooltip" data-placement="top" title="Propiedad"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add Audiovisual -->
+<div class="modal fade" id="modalAddAudiovisual" tabindex="-1" role="dialog" aria-labelledby="modalAddAudiovisual"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-monospace text-white" id="modalAddAudiovisual">NUEVO ELEMENTO DE
+                    AUDIOVISUAL...</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="text-white" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/addAudiovisual" method="POST">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="text" placeholder="Code" class="form-control" id="codeAudio"
+                                    name="codeAudio" required pattern="[a-zA-Z0-9 -]+" data-toggle="tooltip"
+                                    data-placement="top" title="No. Inventario" style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="form-group">
+                                <input type="text" name="descriptionAudio" id="descriptionAudio" class="form-control"
+                                    placeholder="Descripción" required pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                    data-toggle="tooltip" data-placement="top" title="Descripción"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="text" name="serieAudio" id="serieAudio" class="form-control"
+                                    placeholder="Serie" required pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                    data-toggle="tooltip" data-placement="top" title="Serie"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="text" name="marcaAudio" id="marcaAudio" class="form-control"
+                                    placeholder="Marca" required pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                    data-toggle="tooltip" data-placement="top" title="Marca"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="text" name="modelAudio" id="modelAudio" class="form-control"
+                                    placeholder="Modelo" required pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                    data-toggle="tooltip" data-placement="top" title="Modelo"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="text" name="propertyAudio" id="propertyAudio" class="form-control"
+                                    placeholder="Propiedad" required pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                    data-toggle="tooltip" data-placement="top" title="Propiedad"
+                                    style="background-color:#F2F2F2;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- All Content -->
+<div class="tab-content pt-3" id="myTabContent">
+    <!-- Books -->
+    <div class="tab-pane fade show active" id="book" role="tabpanel" aria-labelledby="book-tab">
+        <div class="container">
+            <div class="row">
+                <div class="col col-12 col-lg-5">
+                    <ul class="list-group">
+                        <li class="list-group-item text-center active">INFORMACIÓN</li>
+                        <li class="list-group-item text-justify">
+                            El módulo de inventario en la sección de "Libros" muestra un listado de todos los
+                            libros
+                            existentes en biblioteca contenidos en una tabla que permite ordenarlos de acuerdo a
+                            la
+                            información que se requiera, asi como una barra de búsqueda rápida en la parte
+                            superior
+                            derecha
+                            y la paginación permitida en la parte inferior derecha.
+                        </li>
+                        <li class="list-group-item text-justify text-dark">
+                            La primer columna contiene un icono que al presionarlo muestra información extra del
+                            libro en cuestión.
+                        </li>
+                        <li class="list-group-item text-justify text-dark">
+                            La última columna contiene las acciones permitidas por registro seleccionado (editar,
+                            eliminar o realizar un préstamo).
+                        </li>
+                        <li class="list-group-item text-justify text-dark">
+                            Los registros que contengan un libro que actualmente está prestado tomarán un color de
+                            fondo distinto al resto.
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- CAROUSEL -->
+                <div class="col col-12 col-lg-7 pl-5">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="{{ url_for('static', filename='img/library3.png') }}" class="d-block w-100"
+                                    alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{{ url_for('static', filename='img/book.png') }}" class="d-block w-100"
+                                    alt="...">
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
+                            data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
+                            data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="card bg-primary text-white"
+            onmouseover="javascript:document.getElementById('navGeneral').className = 'navbar navbar-expand-lg navbar-dark bg-primary';"
+            onmouseout="javascript:document.getElementById('navGeneral').className = 'navbar navbar-expand-lg navbar-dark bg-primary sticky-top';">
+            <div class="card-body table-responsive">
+                <table id="tableBooks" class="order-column display hover row-border nowrap compact" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Código</th>
+                            <th>Titulo</th>
+                            <th>Autor</th>
+                            <th>Editorial</th>
+                            <th>Edición</th>
+                            <th>U. medida</th>
+                            <th>Materia</th>
+                            <th>Conocimiento</th>
+                            <th>Estado</th>
+                            <th>Ingreso</th>
+                            <th>Responsable</th>
+                            <th>Observaciones</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for book in books %}
+                        <tr id="rowBook{{ book.0 }}" class="text-primary">
+                            <th id="colPlusBook{{ book.0 }}" class="bg-secondary"> <span
+                                    class="fas fa-folder-plus"></span> </th>
+                            <td> {{ book.0 }} </td>
+                            <td> {{ book.1 }} </td>
+                            <td> {{ book.2 }} </td>
+                            <td> {{ book.3 }} </td>
+                            <td> {{ book.4 }} </td>
+                            <td> {{ book.5 }} </td>
+                            <td> {{ book.6 }} </td>
+                            <td> {{ book.7 }} </td>
+                            <td> {{ book.8 }} </td>
+                            <td> {{ book.9 }} </td>
+                            <td> {{ book.10 }} </td>
+                            <td> {{ book.11 }} </td>
+                            <td class="text-center">
+                                <button data-toggle="modal" class="btn" data-target="#modalEditBook{{ book.0 }}">
+                                    <i class="fas fa-edit text-primary"></i>
+                                </button>
+                                <button class="btn" onclick="deleteBook('{{ book.0 }}','{{ book.1 }}','{{ book.4 }}');">
+                                    <i class="fas fa-trash-alt text-primary"></i>
+                                </button>
+                                <button type="button" id="btnBookCard{{ book.0 }}" class="btn" data-toggle="modal"
+                                    data-target="#modalElectionCard{{ book.0 }}">
+                                    <i class="fas fa-question text-primary"></i>
+                                </button>
+                            </td>
+                            <!-- COLOREAR FILA SI EL LIBRO ESTA PRESTADO -->
+                            {% if book.12 == 'D' %}
+                            <script type="text/javascript">
+                                document.getElementById('rowBook{{ book.0 }}').classList.add('table-warning');
+                                document.getElementById('colPlusBook{{ book.0 }}').classList.add('bg-warning');
+                                document.getElementById('btnBookCard{{ book.0 }}').disabled = true;
+                            </script>
+                            {% endif %}
+                        </tr>
+
+                        <!-- Modal Type Card Book -->
+                        <div class="modal fade" id="modalElectionCard{{ book.0 }}" tabindex="-1" role="dialog"
+                            aria-labelledby="modalElectionCard{{ book.0 }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-primary">
+                                        <h5 class="modal-title text-white" id="modalElectionCard{{ book.0 }}">Tipo de
+                                            préstamo</h5>
+                                        <button onclick="cerrar();" type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                            <span class="text-white" aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="">
+                                        <div class="modal-body">
+                                            <div class="row justify-content-center text-center align-items-center">
+                                                <div class="col-6">
+                                                    <i class="fas fa-5x fa-user text-primary" data-toggle="modal"
+                                                        data-target="#modalCardBookAlumn{{ book.0 }}"
+                                                        data-dismiss="modal"></i>
+                                                    <small id="" class="form-text text-primary">
+                                                        Alumno
+                                                    </small>
+                                                </div>
+                                                <div class="col-6">
+                                                    <i class="fas fa-5x fa-user-tie text-primary" data-toggle="modal"
+                                                        data-target="#modalCardBookTeacher{{ book.0 }}"
+                                                        data-dismiss="modal"></i>
+                                                    <small id="" class="form-text text-primary">
+                                                        Docente
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer"></div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Card Book Alumn -->
+                        <div class="modal fade" id="modalCardBookAlumn{{ book.0 }}" tabindex="-1" role="dialog"
+                            aria-labelledby="modalCardBookAlumn{{ book.0 }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-primary">
+                                        <h5 class="modal-title text-white" id="modalCardBookAlumn{{ book.0 }}">PRÉSTAMO
+                                            DE LIBRO A
+                                            ALUMNO</h5>
+                                        <button onclick="cerrar();" type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                            <span class="text-white" aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="/addCardBookAlumn" method="POST">
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-12 text-center">
+                                                    <div class="form-group">
+                                                        <small class="text-muted">Datos del alumno</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <input type="text" placeholder="Nombre" class="form-control"
+                                                            id="nameAlumn" name="nameAlumn" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.-"#]+' data-toggle="tooltip"
+                                                            data-placement="top" title="Nombre"
+                                                            style="background-color:#F2F2F2;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <input type="text" placeholder="Materia" class="form-control"
+                                                            id="matterAlumn" name="matterAlumn" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top" title="Materia"
+                                                            style="background-color:#F2F2F2;">
+                                                    </div>
+                                                </div>
+                                                <div class="input-group mb-3 col-5">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon5"
+                                                            style="background-color:#E6E6E6;">Carrera</span>
+                                                    </div>
+                                                    <select class="custom-select form-control" id="areaAlumn"
+                                                        name="areaAlumn" data-toggle="tooltip" data-placement="top"
+                                                        title="Carrera" required style="background-color:#F2F2F2;">
+                                                        <option value="">?</option>
+                                                        <option value="Programacion">Programación</option>
+                                                        <option value="Electricidad">Electricidad</option>
+                                                        <option value="Soporte">Soporte y mantenimiento de equipo de
+                                                            computo
+                                                        </option>
+                                                        <option value="Alimentos">Alimentos y bebidas</option>
+                                                        <option value="Procesos">Procesos de gestión administrativa
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="input-group mb-3 col-4 offset-2">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon3"
+                                                            style="background-color:#E6E6E6;">Semestre</span>
+                                                    </div>
+                                                    <select class="custom-select form-control" id="grade" name="grade"
+                                                        data-toggle="tooltip" data-placement="top" title="Semestre"
+                                                        required style="background-color:#F2F2F2;">
+                                                        <option value="">?</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                    </select>
+                                                </div>
+                                                <div class="input-group mb-3 col-4">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon4"
+                                                            style="background-color:#E6E6E6;">Grupo</span>
+                                                    </div>
+                                                    <select class="custom-select form-control" id="group" name="group"
+                                                        data-toggle="tooltip" data-placement="top" title="Grupo"
+                                                        required style="background-color:#F2F2F2;">
+                                                        <option value="">?</option>
+                                                        <option value="A">A</option>
+                                                        <option value="B">B</option>
+                                                        <option value="C">C</option>
+                                                        <option value="D">D</option>
+                                                        <option value="E">E</option>
+                                                        <option value="F">F</option>
+                                                        <option value="G">G</option>
+                                                        <option value="H">H</option>
+                                                        <option value="I">I</option>
+                                                        <option value="J">J</option>
+                                                        <option value="K">K</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-12">
+                                                    <hr>
+                                                </div>
+                                                <div class="col-12 text-center">
+                                                    <div class="form-group">
+                                                        <small class="text-muted">Datos del libro</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="codeBook" id="codeBook"
+                                                            value="{{ book.0 }}">
+                                                        <input type="text" class="form-control" value="{{ book.0 }}"
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="No. Inventario" disabled
+                                                            style="background-color:#E6E6E6;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-5">
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="nameBook" id="nameBook"
+                                                            value="{{ book.1 }}">
+                                                        <input type="text" class="form-control" disabled
+                                                            data-toggle="tooltip" data-placement="top" title="Título"
+                                                            value="{{ book.1 }}" style="background-color:#E6E6E6;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="authorBook" id="authorBook"
+                                                            value="{{ book.2 }}">
+                                                        <input type="text" class="form-control" disabled
+                                                            data-toggle="tooltip" data-placement="top" title="Autor"
+                                                            value="{{ book.2 }}" style="background-color:#E6E6E6;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <hr>
+                                                </div>
+                                                <div class="col-12 text-center">
+                                                    <div class="form-group">
+                                                        <small class="text-muted">Fechas</small>
+                                                    </div>
+                                                </div>
+                                                <div class="input-group mb-3 col-5 offset-1">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1"
+                                                            style="background-color:#E6E6E6;">Préstamo</span>
+                                                    </div>
+                                                    <input type="date" value="{{ fechaActual }}" name="dateLoan"
+                                                        id="dateLoan" class="form-control" required
+                                                        data-toggle="tooltip" data-placement="top" title="Título"
+                                                        style="background-color:#F2F2F2;">
+                                                </div>
+                                                <div class="input-group mb-3 col-5">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon2"
+                                                            style="background-color:#E6E6E6;">Entrega</span>
+                                                    </div>
+                                                    <input type="date" value="{{ fechaEntrega }}" name="dateDelivery"
+                                                        id="dateDelivery" class="form-control" required
+                                                        data-toggle="tooltip" data-placement="top" title="Título"
+                                                        style="background-color:#F2F2F2;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal"
+                                                onclick="cerrar();">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary">Generar tarjeta</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Card Book Teacher -->
+                        <div class="modal fade" id="modalCardBookTeacher{{ book.0 }}" tabindex="-1" role="dialog"
+                            aria-labelledby="modalCardBookTeacher{{ book.0 }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-primary">
+                                        <h5 class="modal-title text-white" id="modalCardBookTeacher{{ book.0 }}">
+                                            PRÉSTAMO DE LIBRO
+                                            A
+                                            DOCENTE</h5>
+                                        <button onclick="cerrar();" type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                            <span class="text-white" aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="/addCardBookTeacher" method="POST">
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-8 offset-2">
+                                                    <div class="form-group">
+                                                        <input type="text" placeholder="Nombre del docente"
+                                                            class="form-control text-center" id="nameTeacher"
+                                                            name="nameTeacher" required data-toggle="tooltip"
+                                                            data-placement="top" title="Nombre del docente"
+                                                            style="background-color:#F2F2F2;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <hr>
+                                                </div>
+                                                <div class="col-12 text-center">
+                                                    <div class="form-group">
+                                                        <small class="text-muted">Datos del libro</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="codeBook" id="codeBook"
+                                                            value="{{ book.0 }}">
+                                                        <input type=" text" class="form-control" disabled
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="No. Inventario" value="{{ book.0 }}"
+                                                            style="background-color:#E6E6E6;">
+                                                    </div>
+                                                </div>
+                                                <div class=" col-8">
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="nameBook" id="nameBook"
+                                                            value="{{ book.1 }}">
+                                                        <input type="text" class="form-control" disabled
+                                                            data-toggle="tooltip" data-placement="top" title="Título"
+                                                            value="{{ book.1 }}" style="background-color:#E6E6E6;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="authorBook" id="authorBook"
+                                                            value="{{ book.2 }}">
+                                                        <input type="text" class="form-control" disabled
+                                                            data-toggle="tooltip" data-placement="top" title="Autor"
+                                                            value="{{ book.2 }}" style="background-color:#E6E6E6;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="genderBook" id="genderBook"
+                                                            value="{{ book.7 }}">
+                                                        <input type="text" class="form-control" disabled
+                                                            data-toggle="tooltip" data-placement="top" title="Género"
+                                                            value="{{ book.7 }}" style="background-color:#E6E6E6;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <hr>
+                                                </div>
+                                                <div class="input-group mb-3 col-8 offset-2">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1"
+                                                            style="background-color:#E6E6E6;">Préstamo</span>
+                                                    </div>
+                                                    <input type="date" value="{{ fechaActual }}" name="dateLoan"
+                                                        id="dateLoan" class="form-control" required
+                                                        style="background-color:#F2F2F2;">
+                                                </div>
+                                                <div class="input-group mb-3 col-8 offset-2">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon2"
+                                                            style="background-color:#E6E6E6;">Entrega</span>
+                                                    </div>
+                                                    <input type="date" value="{{ fechaEntrega }}" name="dateDelivery"
+                                                        id="dateDelivery" class="form-control" required
+                                                        style="background-color:#F2F2F2;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal"
+                                                onclick="cerrar();">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary">Generar tarjeta</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Edit Book -->
+                        <div class="modal fade" id="modalEditBook{{ book.0 }}" tabindex="-1" role="dialog"
+                            aria-labelledby="modalEditBook" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-primary">
+                                        <h5 class="modal-title text-white" id="modalEditBook">EDITAR LIBRO</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                            onclick="cerrar();">
+                                            <span class="text-white" aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="/updateBook/{{ book.0 }}" method="POST">
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="codeBook"
+                                                            name="codeBook" value="{{ book.0 }}" data-toggle="tooltip"
+                                                            data-placement="top" title="No. Inventario" disabled
+                                                            style="background-color: #E6E6E6;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-8">
+                                                    <div class="form-group">
+                                                        <input type="text" name="nameBook" id="nameBook"
+                                                            class="form-control" placeholder="Título" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top" title="Nombre"
+                                                            style="background-color:#F2F2F2;" value="{{ book.1 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <input type="text" name="authorBook" id="authorBook"
+                                                            class="form-control" placeholder="Autor" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top" title="Autor"
+                                                            style="background-color:#F2F2F2;" value="{{ book.2 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <input type="text" name="editorialBook" id="editorialBook"
+                                                            class="form-control" placeholder="Editorial" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top" title="Editorial"
+                                                            style="background-color:#F2F2F2;" value="{{ book.3 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <input type="text" name="unidadMedida" id="unidadMedida"
+                                                            class="form-control" placeholder="Unidad de medida" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="Unidad de medida" style="background-color:#F2F2F2;"
+                                                            value="{{ book.5 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <input type="text" name="materia" id="materia"
+                                                            class="form-control" placeholder="Materia" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top" title="Materia"
+                                                            style="background-color:#F2F2F2;" value="{{ book.6 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <input type="text" name="campoConocim" id="campoConocim"
+                                                            class="form-control" placeholder="Campo de conocimiento"
+                                                            required pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="Campo de conocimiento"
+                                                            style="background-color:#F2F2F2;" value="{{ book.7 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <input type="text" name="estadoFisico" id="estadoFisico"
+                                                            class="form-control" placeholder="Estado físico" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="Estado físico" style="background-color:#F2F2F2;"
+                                                            value="{{ book.8 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <input type="text" name="responsable" id="responsable"
+                                                            class="form-control" placeholder="Responsable" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="Responsable" style="background-color:#F2F2F2;"
+                                                            value="{{ book.10 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="input-group text-center">
+                                                        <input type="" name="yearEdition" id="yearEdition"
+                                                            class="form-control" placeholder="Año de edición" required
+                                                            min="1950" max="2025" pattern="[0-9]+"
+                                                            value=" {{ book.4 }} " style="background-color: #F2F2F2;">
+                                                    </div>
+                                                </div>
+                                                <div class="input-group mb-3 col-6">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1"
+                                                            style="background-color: #E6E6E6">Fecha de
+                                                            ingreso</span>
+                                                    </div>
+                                                    <input type="date" name="dateInput" id="dateInput"
+                                                        class="form-control" required value="{{ book.9 }}"
+                                                        min="2000-01-01" max="2020-12-31"
+                                                        style="background-color: #F2F2F2">
+                                                </div>
+                                                <div class="input-group col-12">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"
+                                                            style="background-color: #E6E6E6">Observaciones</span>
+                                                    </div>
+                                                    <textarea name="observations" id="observations" class="form-control"
+                                                        required pattern='[a-zA-Z0-9 .,;_@s-"#]+'
+                                                        aria-label="With textarea"
+                                                        style="background-color: #F2F2F2">{{ book.11 }}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal"
+                                                onclick="cerrar();">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary">Guardar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th>Código</th>
+                            <th>Titulo</th>
+                            <th>Autor</th>
+                            <th>Editorial</th>
+                            <th>Edición</th>
+                            <th>U. medida</th>
+                            <th>Materia</th>
+                            <th>Conocimiento</th>
+                            <th>Estado</th>
+                            <th>Ingreso</th>
+                            <th>Responsable</th>
+                            <th>Observaciones</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Biblioteca -->
+    <div class="tab-pane fade" id="biblioteca" role="tabpanel" aria-labelledby="biblioteca-tab">
+        <div class="container">
+            <div class="row">
+                <!-- CAROUSEL -->
+                <div class="col col-12 col-lg-7">
+                    <div id="carouselExampleIndicators2" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carouselExampleIndicators2" data-slide-to="0" class="active"></li>
+                            <li data-target="#carouselExampleIndicators2" data-slide-to="1"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="{{ url_for('static', filename='img/library8.png') }}" class="d-block w-100"
+                                    alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{{ url_for('static', filename='img/library5.png') }}" class="d-block w-100"
+                                    alt="...">
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators2" role="button"
+                            data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators2" role="button"
+                            data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col col-12 col-lg-5">
+                    <ul class="list-group">
+                        <li class="list-group-item text-center active">INFORMACIÓN</li>
+                        <li class="list-group-item text-justify">
+                            El módulo de inventario en la sección de "Biblioteca" muestra un listado de todos los
+                            elementos
+                            existentes en biblioteca contenidos en una tabla que permite ordenarlos de acuerdo a
+                            la
+                            información que se requiera, asi como una barra de búsqueda rápida en la parte
+                            superior
+                            derecha
+                            y la paginación permitida en la parte inferior derecha.
+                        </li>
+                        <li class="list-group-item text-justify text-dark">
+                            La última columna contiene las acciones permitidas por registro seleccionado (editar o
+                            eliminar).
+                        </li>
+                        <li class="list-group-item text-justify text-dark">
+                            Los registros que contengan un elemento que actualmente está prestado tomarán un color de
+                            fondo distinto al resto.
+                        </li>
+                        <li class="list-group-item text-justify text-dark">
+                            Para realizar préstamo de mobiliario se requiere seleccionar los registros que correspondan
+                            a la petición para después presionar el boton rojo ubicado en la parte inferior de la tabla.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-primary text-white"
+            onmouseover="javascript:document.getElementById('navGeneral').className = 'navbar navbar-expand-lg navbar-dark bg-primary';"
+            onmouseout="javascript:document.getElementById('navGeneral').className = 'navbar navbar-expand-lg navbar-dark bg-primary sticky-top';">
+            <div class="card-body table-responsive">
+                <table id="tableLibrary" class="order-column display hover row-border nowrap compact"
+                    style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Descripción</th>
+                            <th>Serie</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Propiedad</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for x in library %}
+                        <tr id="rowLibrary{{ x.0 }}" class="text-primary">
+                            <td id="rowLibrary1{{ x.0 }}"> {{ x.0 }} </td>
+                            <td> {{ x.1 }} </td>
+                            <td> {{ x.2 }} </td>
+                            <td> {{ x.3 }} </td>
+                            <td> {{ x.4 }} </td>
+                            <td> {{ x.5 }} </td>
+                            <th class="text-center">
+                                <button data-toggle="modal" class="btn" data-target="#modalEditLibrary{{ x.0 }}">
+                                    <i class="fas fa-edit text-primary"></i>
+                                </button>
+                                <button class="btn" onclick="deleteLibrary('{{ x.0 }}','{{ x.1 }}');">
+                                    <i class="fas fa-trash-alt text-primary"></i>
+                                </button>
+                            </th>
+                            {% if x.6 == 'D' %}
+                            <script type="text/javascript">
+                                document.getElementById('rowLibrary{{ x.0 }}').classList.add('table-warning');
+                                document.getElementById('rowLibrary1{{ x.0 }}').classList.add('bg-warning');
+                            </script>
+                            {% endif %}
+                        </tr>
+
+                        <!-- Modal Edit Library -->
+                        <div class="modal fade" id="modalEditLibrary{{ x.0 }}" tabindex="-1" role="dialog"
+                            aria-labelledby="modalEditLibrary" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-primary">
+                                        <h5 class="modal-title text-white" id="modalEditLibrary">
+                                            EDITAR ELEMENTO
+                                        </h5>
+                                        <button onclick="cerrar();" type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                            <span class="text-white" aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="/updateLibrary/{{ x.0 }}" method="POST">
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="codeLibrary"
+                                                            name="codeLibrary" value="{{ x.0 }}" data-toggle="tooltip"
+                                                            data-placement="top" title="No. Inventario" disabled
+                                                            style="background-color: #E6E6E6;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-8">
+                                                    <div class="form-group">
+                                                        <input type="text" name="descriptionLibrary"
+                                                            id="descriptionLibrary" class="form-control"
+                                                            placeholder="Descripción" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="Descripción" style="background-color:#F2F2F2;"
+                                                            value="{{ x.1 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <input type="text" name="serieLibrary" id="serieLibrary"
+                                                            class="form-control" placeholder="Serie" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top" title="Serie"
+                                                            style="background-color:#F2F2F2;" value="{{ x.2 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <input type="text" name="marcaLibrary" id="marcaLibrary"
+                                                            class="form-control" placeholder="Marca" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top" title="Marca"
+                                                            style="background-color:#F2F2F2;" value="{{ x.3 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <input type="text" name="modelLibrary" id="modelLibrary"
+                                                            class="form-control" placeholder="Modelo" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top" title="Modelo"
+                                                            style="background-color:#F2F2F2;" value="{{ x.4 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <input type="text" name="propertyLibrary" id="propertyLibrary"
+                                                            class="form-control" placeholder="Propiedad" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top" title="Propiedad"
+                                                            style="background-color:#F2F2F2;" value="{{ x.5 }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal"
+                                                onclick="cerrar();">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary">Guardar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Código</th>
+                            <th>Descripción</th>
+                            <th>Serie</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Propiedad</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col-12 text-center">
+                <input type="button" value="Generar tabla de pŕestamo" id="generar" class="btn btn-danger"
+                    onclick="linkCards();">
+            </div>
+        </div>
+    </div>
+    <!-- Audiovisual room -->
+    <div class="tab-pane fade" id="audiovisualRoom" role="tabpanel" aria-labelledby="audiovisualRoom-tab">
+        <div class="container pb-3">
+            <div class="row">
+                <div class="col col-12 col-lg-5 pt-5">
+                    <ul class="list-group pt-5">
+                        <li class="list-group-item text-center active">INFORMACIÓN</li>
+                        <li class="list-group-item text-justify">
+                            El módulo de inventario en la sección de "Sala audiovisual" muestra un listado de todos los
+                            elementos
+                            existentes en la sala contenidos en una tabla que permite ordenarlos de acuerdo a
+                            la
+                            información que se requiera, asi como una barra de búsqueda rápida en la parte
+                            superior
+                            derecha
+                            y la paginación permitida en la parte inferior derecha.
+                        </li>
+                        <li class="list-group-item text-justify text-dark">
+                            La última columna contiene las acciones permitidas por registro seleccionado (editar o
+                            eliminar).
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- CAROUSEL -->
+                <div class="col col-12 col-lg-7 pl-5 pt-3">
+                    <div id="carouselExampleIndicators3" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carouselExampleIndicators3" data-slide-to="0" class="active"></li>
+                            <li data-target="#carouselExampleIndicators3" data-slide-to="1"></li>
+                            <li data-target="#carouselExampleIndicators3" data-slide-to="2"></li>
+                            <li data-target="#carouselExampleIndicators3" data-slide-to="3"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="{{ url_for('static', filename='img/av.png') }}" class="d-block w-100"
+                                    alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{{ url_for('static', filename='img/chair.png') }}" class="d-block w-100"
+                                    alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{{ url_for('static', filename='img/av.png') }}" class="d-block w-100"
+                                    alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{{ url_for('static', filename='img/chair2.png') }}" class="d-block w-100"
+                                    alt="...">
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators3" role="button"
+                            data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators3" role="button"
+                            data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card bg-primary text-white"
+            onmouseover="javascript:document.getElementById('navGeneral').className = 'navbar navbar-expand-lg navbar-dark bg-primary';"
+            onmouseout="javascript:document.getElementById('navGeneral').className = 'navbar navbar-expand-lg navbar-dark bg-primary sticky-top';">
+            <div class="card-body table-responsive">
+                <table id="tableAudiovisualRoom" class="order-column display hover row-border nowrap compact"
+                    style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Descripción</th>
+                            <th>Serie</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Propiedad</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for room in audiovisualRoom %}
+                        <tr class="text-primary">
+                            <td> {{ room.0 }} </td>
+                            <td> {{ room.1 }} </td>
+                            <td> {{ room.2 }} </td>
+                            <td> {{ room.3 }} </td>
+                            <td> {{ room.4 }} </td>
+                            <td> {{ room.5 }} </td>
+                            <td class="text-center">
+                                <button data-toggle="modal" class="btn" data-target="#modalEditAudiovisual{{ room.0 }}">
+                                    <i class="fas fa-edit text-primary"></i>
+                                </button>
+                                <button class="btn" onclick="deleteAudiovisual('{{ room.0 }}','{{ room.1 }}');">
+                                    <i class="fas fa-trash-alt text-primary"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- Modal Edit Audiovisual -->
+                        <div class="modal fade" id="modalEditAudiovisual{{ room.0 }}" tabindex="-1" role="dialog"
+                            aria-labelledby="modalEditAudiovisual" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-primary">
+                                        <h5 class="modal-title text-white" id="modalEditAudiovisual">EDITAR ELEMENTO
+                                        </h5>
+                                        <button onclick="cerrar();" type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                            <span class="text-white" aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="/updateAudiovisual/{{ room.0 }}" method="POST">
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="codeAudio"
+                                                            name="codeAudio" value="{{ room.0 }}" data-toggle="tooltip"
+                                                            data-placement="top" title="No. Inventario" disabled
+                                                            style="background-color: #E6E6E6;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-8">
+                                                    <div class="form-group">
+                                                        <input type="text" name="descriptionAudio" id="descriptionAudio"
+                                                            class="form-control" placeholder="Descripción" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="Descripción" style="background-color:#F2F2F2;"
+                                                            value="{{ room.1 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <input type="text" name="serieAudio" id="serieAudio"
+                                                            class="form-control" placeholder="Serie" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top" title="Serie"
+                                                            style="background-color:#F2F2F2;" value="{{ room.2 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <input type="text" name="marcaAudio" id="marcaAudio"
+                                                            class="form-control" placeholder="Marca" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top" title="Marca"
+                                                            style="background-color:#F2F2F2;" value="{{ room.3 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <input type="text" name="modelAudio" id="modelAudio"
+                                                            class="form-control" placeholder="Modelo" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top" title="Modelo"
+                                                            style="background-color:#F2F2F2;" value="{{ room.4 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <input type="text" name="propertyAudio" id="propertyAudio"
+                                                            class="form-control" placeholder="Propiedad" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top" title="Propiedad"
+                                                            style="background-color:#F2F2F2;" value="{{ room.5 }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal"
+                                                onclick="cerrar();">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary">Guardar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Código</th>
+                            <th>Descripción</th>
+                            <th>Serie</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Propiedad</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Projectors -->
+    <div class="tab-pane fade" id="projectors" role="tabpanel" aria-labelledby="projectors-tab">
+        <div class="container">
+            <div class="row">
+                <!-- CAROUSEL -->
+                <div class="col col-12 col-lg-7 pt-3">
+                    <div id="carouselExampleIndicators4" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carouselExampleIndicators4" data-slide-to="0" class="active"></li>
+                            <li data-target="#carouselExampleIndicators4" data-slide-to="1"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="{{ url_for('static', filename='img/projector2.png') }}" class="d-block w-100"
+                                    alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{{ url_for('static', filename='img/projectorPro.png') }}"
+                                    class="d-block w-100" alt="...">
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators4" role="button"
+                            data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators4" role="button"
+                            data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col col-12 col-lg-5 pt-5">
+                    <ul class="list-group">
+                        <li class="list-group-item text-center active">INFORMACIÓN</li>
+                        <li class="list-group-item text-justify">
+                            El módulo de inventario en la sección de "Proyectores" muestra un listado de todos los
+                            proyectores
+                            existentes en biblioteca contenidos en una tabla que permite ordenarlos de acuerdo a
+                            la
+                            información que se requiera, asi como una barra de búsqueda rápida en la parte
+                            superior
+                            derecha
+                            y la paginación permitida en la parte inferior derecha.
+                        </li>
+                        <li class="list-group-item text-justify text-dark">
+                            La última columna contiene las acciones permitidas por registro seleccionado (editar,
+                            eliminar o realizar un préstamo).
+                        </li>
+                        <li class="list-group-item text-justify text-dark">
+                            Los registros que contengan un proyector que actualmente está prestado tomarán un color de
+                            fondo distinto al resto.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card bg-primary text-white"
+            onmouseover="javascript:document.getElementById('navGeneral').className = 'navbar navbar-expand-lg navbar-dark bg-primary';"
+            onmouseout="javascript:document.getElementById('navGeneral').className = 'navbar navbar-expand-lg navbar-dark bg-primary sticky-top';">
+            <div class="card-body table-responsive">
+                <table id="tableProjectors" class="order-column display hover row-border nowrap compact"
+                    style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Descripción</th>
+                            <th>Serie</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Propiedad</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for projector in projectors %}
+                        <tr id="rowProjector{{ projector.0 }}" class="text-primary">
+                            <td id="col1Projector{{ projector.0 }}"> {{ projector.0 }} </td>
+                            <td> {{ projector.1 }} </td>
+                            <td> {{ projector.2 }} </td>
+                            <td> {{ projector.3 }} </td>
+                            <td> {{ projector.4 }} </td>
+                            <td> {{ projector.5 }} </td>
+                            <td class="text-center">
+                                <button data-toggle="modal" class="btn"
+                                    data-target="#modalEditProjector{{ projector.0 }}">
+                                    <i class="fas fa-edit text-primary"></i>
+                                </button>
+                                <button class="btn" onclick="deleteProjector('{{ projector.0 }}','{{ projector.1 }}');">
+                                    <i class="fas fa-trash-alt text-primary"></i>
+                                </button>
+                                <button id="btnBookCard{{ projector.0 }}" class="btn" data-toggle="modal"
+                                    data-target="#modalCardProjector{{ projector.0 }}">
+                                    <i class="fas fa-question text-primary"></i>
+                                </button>
+                            </td>
+                            <!-- COLOREAR FILA SI EL PROYECTOR ESTA PRESTADO -->
+                            {% if projector.6 == 'D' %}
+                            <script type="text/javascript">
+                                document.getElementById('rowProjector{{ projector.0 }}').classList.add('table-warning');
+                                document.getElementById('col1Projector{{ projector.0 }}').classList.add('bg-warning');
+                                document.getElementById('btnBookCard{{ projector.0 }}').disabled = true;
+                            </script>
+                            {% endif %}
+                        </tr>
+
+                        <!-- Modal Card Projector -->
+                        <div class="modal fade" id="modalCardProjector{{ projector.0 }}" tabindex="-1" role="dialog"
+                            aria-labelledby="modalCardProjector{{ projector.0 }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-primary">
+                                        <h5 class="modal-title text-white" id="modalCardProjector{{ projector.0 }}">
+                                            PRÉSTAMO DE PROYECTOR</h5>
+                                        <button onclick="cerrar();" type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                            <span class="text-white" aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="/addCardProjector" method="POST">
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <input type="hidden" name="code" id="code" value="{{ projector.0 }}">
+                                                <input type="hidden" id="projectorInfo" name="projectorInfo"
+                                                    value="{{ projector.1 }}">
+                                                <div class="col-12 text-center">
+                                                    <div class="form-group">
+                                                        <small class="text-muted">Datos del
+                                                            solicitante</small>
+                                                    </div>
+                                                </div>
+                                                <div class="input-group mb-3 col-8 offset-2">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon5"
+                                                            style="background-color: #E6E6E6;">Cargo</span>
+                                                    </div>
+                                                    <select class="custom-select form-control" id="cargoSolic"
+                                                        name="cargoSolic" data-toggle="tooltip" data-placement="top"
+                                                        title="Cargo" required style="background-color: #F2F2F2;">
+                                                        <option value="">?</option>
+                                                        <option value="Docente">Docente</option>
+                                                        <option value="Administrativo">Administrativo
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-10 offset-1">
+                                                    <div class="form-group">
+                                                        <input type="text" placeholder="Nombre"
+                                                            class="form-control text-center" id="nameSolic"
+                                                            name="nameSolic" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="Nombre del solicitante"
+                                                            style="background-color:#F2F2F2;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <hr>
+                                                </div>
+                                                <div class="col-12 text-center">
+                                                    <div class="form-group">
+                                                        <small class="text-muted">Descripición del
+                                                            préstamo</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-10 offset-1">
+                                                    <div class="form-group">
+                                                        <input type="text" placeholder="Materia y/o Actividad"
+                                                            class="form-control text-center" id="mattAct" name="mattAct"
+                                                            required pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="Descripción" style="background-color:#F2F2F2;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-row">
+                                                        <div class="input-group mb-3 col-6">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon3"
+                                                                    style="background-color: #E6E6E6;">Semestre</span>
+                                                            </div>
+                                                            <select class="custom-select form-control" id="grade"
+                                                                name="grade" data-toggle="tooltip" data-placement="top"
+                                                                title="Semestre" required
+                                                                style="background-color: #F2F2F2;">
+                                                                <option value="">?</option>
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                                <option value="6">6</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="input-group mb-3 col-6">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon4"
+                                                                    style="background-color: #E6E6E6;">Grupo</span>
+                                                            </div>
+                                                            <select class="custom-select form-control" id="group"
+                                                                name="group" data-toggle="tooltip" data-placement="top"
+                                                                title="Grupo" required
+                                                                style="background-color: #F2F2F2;">
+                                                                <option value="">?</option>
+                                                                <option value="A">A</option>
+                                                                <option value="B">B</option>
+                                                                <option value="C">C</option>
+                                                                <option value="D">D</option>
+                                                                <option value="E">E</option>
+                                                                <option value="F">F</option>
+                                                                <option value="G">G</option>
+                                                                <option value="H">H</option>
+                                                                <option value="I">I</option>
+                                                                <option value="J">J</option>
+                                                                <option value="K">K</option>
+                                                                <option value="L">L</option>
+                                                                <option value="M">M</option>
+                                                                <option value="N">N</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-row">
+                                                        <div class="input-group mb-3 col-5">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon7"
+                                                                    style="background-color: #E6E6E6;">Aula</span>
+                                                            </div>
+                                                            <select class="custom-select form-control" id="aula"
+                                                                name="aula" data-toggle="tooltip" data-placement="top"
+                                                                title="Aula" required
+                                                                style="background-color: #F2F2F2;">
+                                                                <option value="">?</option>
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                                <option value="6">6</option>
+                                                                <option value="7">7</option>
+                                                                <option value="8">8</option>
+                                                                <option value="9">9</option>
+                                                                <option value="10">10</option>
+                                                                <option value="11">11</option>
+                                                                <option value="12">12</option>
+                                                                <option value="13">13</option>
+                                                                <option value="14">14</option>
+                                                                <option value="15">15</option>
+                                                                <option value="16">16</option>
+                                                                <option value="17">17</option>
+                                                                <option value="18">18</option>
+                                                                <option value="19">19</option>
+                                                                <option value="20">20</option>
+                                                                <option value="21">21</option>
+                                                                <option value="22">22</option>
+                                                                <option value="23">23</option>
+                                                                <option value="24">24</option>
+                                                                <option value="25">25</option>
+                                                                <option value="26">26</option>
+                                                                <option value="27">27</option>
+                                                                <option value="28">28</option>
+                                                                <option value="29">29</option>
+                                                                <option value="30">30</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="input-group mb-3 col-7">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1"
+                                                                    style="background-color: #E6E6E6;">Fecha</span>
+                                                            </div>
+                                                            <input type="date" value="{{ fechaActual }}" name="dateLoan"
+                                                                id="dateLoan" class="form-control" required
+                                                                style="background-color: #F2F2F2;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="input-group mb-3 col-8 offset-2">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1"
+                                                            style="background-color: #E6E6E6;">Horario
+                                                            préstamo</span>
+                                                    </div>
+                                                    <input type="time" value="{{ hora }}" name="hourLoan" id="hourLoan"
+                                                        class="form-control" required
+                                                        style="background-color: #F2F2F2;">
+                                                </div>
+                                                <div class="input-group mb-3 col-8 offset-2">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1"
+                                                            style="background-color: #E6E6E6;">Horario
+                                                            entrega</span>
+                                                    </div>
+                                                    <input type="time" value="" name="hourDelivery" id="hourDelivery"
+                                                        class="form-control" required
+                                                        style="background-color: #F2F2F2;">
+                                                </div>
+                                                <div class="col-12">
+                                                    <hr>
+                                                </div>
+                                                <div class="col-12 text-center">
+                                                    <div class="form-group">
+                                                        <small class="text-muted">Propiedades y
+                                                            componentes</small>
+                                                    </div>
+                                                </div>
+                                                <div class="input-group mb-3 col-8 offset-2">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon5"
+                                                            style="background-color: #E6E6E6;">No.
+                                                            Proyector</span>
+                                                    </div>
+                                                    <select class="custom-select form-control" id="noProjector"
+                                                        name="noProjector" data-toggle="tooltip" data-placement="top"
+                                                        title="Cargo" required style="background-color: #F2F2F2;">
+                                                        <option value="">?</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                    </select>
+                                                </div>
+                                                <div class="row pr-5 pl-5">
+                                                    <div class="col-4">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                value="Cable VGA" id="check1" name="check1">
+                                                            <label class="form-check-label text-dark" for="check1">
+                                                                Cable VGA
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                value="Cable de corriente" id="check2" name="check2">
+                                                            <label class="form-check-label text-dark" for="check2">
+                                                                Cable de corriente
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                value="Cable HDMI" id="check3" name="check3">
+                                                            <label class="form-check-label text-dark" for="check3">
+                                                                Cable HDMI
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                value="Cable USB" id="check4" name="check4">
+                                                            <label class="form-check-label text-dark" for="check4">
+                                                                Cable USB
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                value="Control remoto" id="check5" name="check5">
+                                                            <label class="form-check-label text-dark" for="check5">
+                                                                Control remoto
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                value="Funda" id="check6" name="check6">
+                                                            <label class="form-check-label text-dark" for="check6">
+                                                                Funda
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                value="Cortinas" id="check7" name="check7">
+                                                            <label class="form-check-label text-dark" for="check7">
+                                                                Cortinas
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                value="Cortineros" id="check8" name="check8">
+                                                            <label class="form-check-label text-dark" for="check8">
+                                                                Cortineros
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                value="Extensión de corriente" id="check9"
+                                                                name="check9">
+                                                            <label class="form-check-label text-dark" for="check9">
+                                                                Extensión de corriente
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal"
+                                                onclick="cerrar();">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary">Guardar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Edit Projector -->
+                        <div class="modal fade" id="modalEditProjector{{ projector.0 }}" tabindex="-1" role="dialog"
+                            aria-labelledby="modalEditProjector" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-primary">
+                                        <h5 class="modal-title text-white" id="modalEditProjector">EDITAR PROYECTOR
+                                        </h5>
+                                        <button onclick="cerrar();" type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                            <span class="text-white" aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="/updateProjector/{{ projector.0 }}" method="POST">
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="codeProjector"
+                                                            name="codeProjector" value="{{ projector.0 }}"
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="No. Inventario" disabled
+                                                            style="background-color: #E6E6E6;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-8">
+                                                    <div class="form-group">
+                                                        <input type="text" name="descriptionProjector"
+                                                            id="descriptionProjector" class="form-control"
+                                                            placeholder="Descripción" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="Descripción" style="background-color:#F2F2F2;"
+                                                            value="{{ projector.1 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <input type="text" name="serieProjector" id="serieProjector"
+                                                            class="form-control" placeholder="Serie" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top" title="Serie"
+                                                            style="background-color:#F2F2F2;" value="{{ projector.2 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <input type="text" name="marcaProjector" id="marcaProjector"
+                                                            class="form-control" placeholder="Marca" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top" title="Marca"
+                                                            style="background-color:#F2F2F2;" value="{{ projector.3 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <input type="text" name="modelProjector" id="modelProjector"
+                                                            class="form-control" placeholder="Modelo" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top" title="Modelo"
+                                                            style="background-color:#F2F2F2;" value="{{ projector.4 }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <input type="text" name="propertyProjector"
+                                                            id="propertyProjector" class="form-control"
+                                                            placeholder="Propiedad" required
+                                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+'
+                                                            data-toggle="tooltip" data-placement="top" title="Propiedad"
+                                                            style="background-color:#F2F2F2;" value="{{ projector.5 }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal"
+                                                onclick="cerrar();">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary">Guardar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Código</th>
+                            <th>Descripción</th>
+                            <th>Serie</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Propiedad</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

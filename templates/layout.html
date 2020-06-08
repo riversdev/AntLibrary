@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- TITLE -->
+    <title>Ant Website</title>
+    <!-- FAVICON -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/x-icon">
+    <!-- BOOTSTRAP 4.3.1 
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">-->
+    <!-- BOOTSWATCH LUX 4.3.1 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <!-- DATA TABLES 1.10.18 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='DataTables/datatables.css') }}">
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <!-- Font Awesome 5.9.0 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/all.css') }}">
+    <!-- Alertify 1.11.4 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='alertifyjs/css/alertify.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='alertifyjs/css/themes/default.css') }}">
+    <!-- Full Calendar -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='fullcalendar/packages/core/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fullcalendar/packages/daygrid/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fullcalendar/packages/timegrid/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fullcalendar/packages/list/main.css') }}">
+
+    <!-- CUSTOM JS ELEMENTAL -->
+    <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='socketio.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='alertifyjs/alertify.js') }}"></script>
+    <script src="{{ url_for('static', filename='Highcharts/code/highcharts.js') }}"></script>
+    <script src="{{ url_for('static', filename='Highcharts/code/modules/exporting.js') }}"></script>
+    <script src="{{ url_for('static', filename='Highcharts/code/modules/export-data.js') }}"></script>
+    <script src="{{ url_for('static', filename='Highcharts/code/modules/data.js') }}"></script>
+    <script src="{{ url_for('static', filename='Highcharts/code/modules/drilldown.js') }}"></script>
+
+    <!-- CUSTOM JS DESIGN -->
+    <script src="{{ url_for('static', filename='DataTables/datatables.js') }}"></script>
+    <script src="{{ url_for('static', filename='DataTables/DataTables-1.10.18/js/jquery.dataTables.js') }}"></script>
+    <script src="{{ url_for('static', filename='font-awesome/js/all.js') }}"></script>
+    <script src="{{ url_for('static', filename='fullcalendar/packages/core/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='fullcalendar/packages/interaction/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='fullcalendar/packages/daygrid/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='fullcalendar/packages/timegrid/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='fullcalendar/packages/list/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='fullcalendar/packages/core/locales-all.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.js') }}"></script>
+</head>
+
+<body class="bg-secondary">
+
+    <!-- NAVIGATION -->
+    <nav id="navGeneral" class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <a class="navbar-brand" href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='img/favicon.svg') }}" width="30" height="30"
+                class="d-inline-block align-top text-white" alt="">
+            Ant Website
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item" id="linkNavInventory">
+                    <a class="nav-link" href="{{ url_for('inventory') }}">Inventario</a>
+                </li>
+                <li class="nav-item" id="linkNavVisits">
+                    <a class="nav-link" href="{{ url_for('visits') }}">Visitas</a>
+                </li>
+                <li class="nav-item" id="linkNavGraphs">
+                    <a class="nav-link" href="{{ url_for('graph') }}">Gráficos</a>
+                </li>
+                <li class="nav-item" id="linkNavReservations">
+                    <a class="nav-link" href="{{ url_for('reservations') }}">Reservar audiovisual</a>
+                </li>
+                <li class="nav-item" id="linkNavRecord">
+                    <a class="nav-link" href="{{ url_for('record') }}">Registro</a>
+                </li>
+            </ul>
+            {% block navInventory %}
+            {% endblock %}
+            {% block navVisits %}
+            {% endblock %}
+            {% block navCards %}
+            {% endblock %}
+            <ul class="navbar-nav ml-auto">
+                <!--<li class="nav-item">
+                    <a id="enlaceRegresar" class="btn btn-success text-light" onclick="linkRecord();" style="display: none;"
+                        data-toggle="tooltip" data-placement="top" title="Regresar">
+                        Regresar
+                    </a>
+                </li>-->
+                <li class="nav-item">
+                    <a id="enlaceImprimir" class="btn btn-success text-light" onclick="javascript:window.print();"
+                        style="display: none;" data-toggle="tooltip" data-placement="top" title="Imprimir">
+                        Imprimir
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" onclick="exit();">Salir</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <nav>
+        {% block navInventoryTwo %}
+        {% endblock %}
+    </nav>
+
+    <!-- MESSAGES -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <script type="text/javascript" async="async">
+        callMsg('{{ category }}', '{{ message }}');
+    </script>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <!-- CONTENT BLOCKS -->
+    <div id="generalContent">
+        {% block home %}
+        {% endblock %}
+        {% block inventory %}
+        {% endblock %}
+        {% block visits %}
+        {% endblock %}
+        {% block cards %}
+        {% endblock %}
+        {% block graph %}
+        {% endblock %}
+        {% block record %}
+        {% endblock %}
+        {% block reservations %}
+        {% endblock %}
+        {% block cardRecords %}
+        {% endblock %}
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="pt-5">
+        <div class="navbar navbar-dark bg-primary justify-content-center text-light">
+            <p>&copy; Copyright 2019 - Ant Website. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

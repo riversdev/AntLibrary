@@ -1,0 +1,285 @@
+{% extends "layout.html" %}
+
+{% block graph %}
+<script>
+    $(document).ready(function () {
+        document.getElementById('linkNavGraphs').className = 'active';
+        document.body.style.overflow = 'hidden';
+        // document.body.style.background = 'url("{{ url_for("static", filename="img/chess.png") }}") no-repeat';
+        // document.body.style.backgroundAttachment = 'fixed';
+        // document.body.style.backgroundSize = 'cover';
+    });
+</script>
+<!-- Modal -->
+<div class="modal fade" id="modalGraphs" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="graficador"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<script type="text/javascript">
+    // Create the chart
+    $.getJSON('series1', function (series1) {
+        $.getJSON('series2', function (series2) {
+            Highcharts.chart('semestres', {
+                chart: {
+                    type: 'column'
+                },
+
+                title: {
+                    text: 'Visitas a biblioteca. (últimos 6 meses)'
+                },
+
+                subtitle: {
+                    text: 'Presiona las columnas para ver detalles. <a href="{{ url_for("home") }}" target="_blank">--Menu--</a>'
+                },
+
+                xAxis: {
+                    type: 'category'
+                },
+
+                yAxis: {
+                    title: {
+                        text: 'Número de visitas'
+                    }
+                },
+
+                legend: {
+                    enabled: false
+                },
+
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y:1f}'
+                        }
+                    }
+                },
+
+                tooltip: {
+                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:2f}</b> visitas<br/>'
+                },
+
+                series: [
+                    {
+                        name: "Meses",
+                        colorByPoint: true,
+                        data: series1
+                    }
+                ],
+
+                drilldown: {
+                    series: series2
+                }
+            });
+        });
+    });
+</script>-->
+<script type="text/javascript">
+    $('#modalGraphs').modal('show');
+    $.getJSON('/categories', function (categories) {
+        $.getJSON('/series', function (series) {
+            Highcharts.chart('graficador', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'VISITAS A BIBLIOTECA. (últimos 6 meses)'
+                },
+                subtitle: {
+                    text: '{{ information }}'
+                },
+                xAxis: {
+                    categories: categories,
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Numero de visitas'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:f} visitas</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: series
+            });
+        });
+    });
+</script>
+
+<div class="container pt-5 pb-5">
+    <div class="row justify-content-center align-items-center pt-3">
+        <div class="card mb-3 bg-primary text-white" style="width: 55rem;">
+            <div class="card-header text-center text-monospace font-weight-bold">Personaliza tu gráfica...</div>
+            <form action="/newGraph" method="POST" id="formGraph">
+                <div class="card-body text-dark">
+                    <div class="row justify-content-center text-center">
+                        <div class="col-auto pt-2 font-weight-bold">
+                            <label class="text-white" for="">Mostrar campo variable</label>
+                        </div>
+                        <div class="col-auto">
+                            <select class="custom-select form-control" id="param1" name="param1" data-toggle="tooltip"
+                                data-placement="top" title="Primer parámetro" required>
+                                <option value="">?</option>
+                                <optgroup label="Asunto">
+                                    <option value="Asunto,Sala de lectura">Sala de lectura</option>
+                                    <option value="Asunto,PC">PC</option>
+                                    <option value="Asunto,Taller">Taller</option>
+                                    <option value="Asunto,Actividad externa">Actividad externa</option>
+                                </optgroup>
+                                <optgroup label="Semestre">
+                                    <option value="Semestre,1">1</option>
+                                    <option value="Semestre,2">2</option>
+                                    <option value="Semestre,3">3</option>
+                                    <option value="Semestre,4">4</option>
+                                    <option value="Semestre,5">5</option>
+                                    <option value="Semestre,6">6</option>
+                                </optgroup>
+                                <optgroup label="Carrera">
+                                    <option value="Carrera,Programacion">Programación</option>
+                                    <option value="Carrera,Soporte">Soporte</option>
+                                    <option value="Carrera,Alimentos">Alimentos</option>
+                                    <option value="Carrera,Electricidad">Electricidad</option>
+                                    <option value="Carrera,Procesos">Procesos</option>
+                                </optgroup>
+                                <optgroup label="Grupo">
+                                    <option value="Grupo,A">A</option>
+                                    <option value="Grupo,B">B</option>
+                                    <option value="Grupo,C">C</option>
+                                    <option value="Grupo,D">D</option>
+                                    <option value="Grupo,E">E</option>
+                                    <option value="Grupo,F">F</option>
+                                    <option value="Grupo,G">G</option>
+                                    <option value="Grupo,H">H</option>
+                                    <option value="Grupo,I">I</option>
+                                    <option value="Grupo,J">J</option>
+                                    <option value="Grupo,K">K</option>
+                                </optgroup>
+                                <optgroup label="Sexo">
+                                    <option value="Sexo,Hombre">Hombre</option>
+                                    <option value="Sexo,Mujer">Mujer</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="col-auto pt-2 font-weight-bold">
+                            <label class="text-white" for="">por constante</label>
+                        </div>
+                        <div class="col-auto">
+                            <select class="custom-select form-control" id="param2" name="param2" data-toggle="tooltip"
+                                data-placement="top" title="Segundo parámetro" required>
+                                <option value="">?</option>
+                                <optgroup label="Asunto">
+                                    <option value="Asunto,Sala de lectura">Sala de lectura</option>
+                                    <option value="Asunto,PC">PC</option>
+                                    <option value="Asunto,Taller">Taller</option>
+                                    <option value="Asunto,Actividad externa">Actividad externa</option>
+                                </optgroup>
+                                <optgroup label="Semestre">
+                                    <option value="Semestre,1">1</option>
+                                    <option value="Semestre,2">2</option>
+                                    <option value="Semestre,3">3</option>
+                                    <option value="Semestre,4">4</option>
+                                    <option value="Semestre,5">5</option>
+                                    <option value="Semestre,6">6</option>
+                                </optgroup>
+                                <optgroup label="Carrera">
+                                    <option value="Carrera,Programacion">Programación</option>
+                                    <option value="Carrera,Soporte">Soporte</option>
+                                    <option value="Carrera,Alimentos">Alimentos</option>
+                                    <option value="Carrera,Electricidad">Electricidad</option>
+                                    <option value="Carrera,Procesos">Procesos</option>
+                                </optgroup>
+                                <optgroup label="Grupo">
+                                    <option value="Grupo,A">A</option>
+                                    <option value="Grupo,B">B</option>
+                                    <option value="Grupo,C">C</option>
+                                    <option value="Grupo,D">D</option>
+                                    <option value="Grupo,E">E</option>
+                                    <option value="Grupo,F">F</option>
+                                    <option value="Grupo,G">G</option>
+                                    <option value="Grupo,H">H</option>
+                                    <option value="Grupo,I">I</option>
+                                    <option value="Grupo,J">J</option>
+                                    <option value="Grupo,K">K</option>
+                                </optgroup>
+                                <optgroup label="Sexo">
+                                    <option value="Sexo,Hombre">Hombre</option>
+                                    <option value="Sexo,Mujer">Mujer</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row pt-3">
+                        <div class="col-6 text-right">
+                            <button type="submit" class="btn btn-outline-light">
+                                Generar gráfico
+                            </button>
+                        </div>
+                        <div class="col 6 text-left">
+                            <button type="button" class="btn btn-outline-light" data-toggle="modal"
+                                data-target="#modalGraphs">
+                                Vizualizar anterior
+                            </button>
+                        </div>
+                    </div>
+                    <hr class="bg-white">
+                    <div class="row justify-content-center text-center font-italic text-secondary">
+                        <div class="col 12">
+                            <p class="text-info">Ejemplos de consulta:</p>
+                        </div>
+                        <div class="col-12 text-white">
+                            <div class="row justify-content-center">
+                                <p>Cuantos alumnos de Programación</p>
+                                <p class="font-weight-bold pr-2">(carrera)</p>
+                                <p>de 2do</p>
+                                <p class="font-weight-bold pr-2">(semestre)</p>
+                                <p>visitaron biblioteca en los últimos 6 meses.</p>
+                            </div>
+                            <div class="row justify-content-center">
+                                <p>Cuantas mujeres</p>
+                                <p class="font-weight-bold pr-2">(sexo)</p>
+                                <p>de electricidad</p>
+                                <p class="font-weight-bold pr-2">(carrera)</p>
+                                <p>visitaron biblioteca en los últimos 6 meses.</p>
+                            </div>
+                            <div class="row justify-content-center">
+                                <p>Cuantos alumnos vinieron por una guitarra</p>
+                                <p class="font-weight-bold pr-2">(asunto)</p>
+                                <p> que son hombres</p>
+                                <p class="font-weight-bold pr-2">(sexo)</p>
+                                <p>en los últimos 6 meses.</p>
+                            </div>
+                            <div class="row justify-content-center">
+                                <p>Cuantos alumnos de 4to</p>
+                                <p class="font-weight-bold pr-2">(semestre)</p>
+                                <p>del B</p>
+                                <p class="font-weight-bold pr-2">(grupo)</p>
+                                <p>visitaron biblioteca en los últimos 6 meses.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

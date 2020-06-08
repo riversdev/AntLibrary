@@ -1,0 +1,112 @@
+{% extends 'layout.html' %}
+
+{% block cardRecords %}
+<script>
+    $(document).ready(function () {
+        document.getElementById('enlaceImprimir').style.display = 'block';
+        document.getElementById('enlaceRegresar').style.display = 'block';
+    });
+</script>
+
+<div class="container pt-2" style="border: 1px solid black;">
+    <div class="row">
+        <div class="col col-4 p-2 text-left">
+            <img src="/static/img/logoHorizontalCecyteh.png" height="60px">
+        </div>
+        <div class="col col-4 p-2 text-center">
+            <img src="/static/img/seph.png" height="60px">
+        </div>
+        <div class="col col-4 p-2 text-right">
+            <img src="/static/img/Escudo_de_Armas.png" height="60px">
+        </div>
+    </div>
+    <div class="modal-header border-primary bg-primary justify-content-center">
+        <h5 class="modal-title text-white">VALE DE PRESTAMO DE MOBILIARIO Y EQUIPO</h5>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col col-4 offset-4 text-center">
+                <table class="table table-bordered table-sm text-primary">
+                    <tr>
+                        <th>Nombre del responsable: </th>
+                        <td>{{ data[0][8] }}</td>
+                        <th>Area del responsable: </th>
+                        <td>{{ data[0][9] }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-12 text-center">
+                <table class="table table-bordered table-sm text-primary">
+                    <thead>
+                        <tr>
+                            <th colspan="4">
+                                <h6>Lista de mobiliario</h6>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Cantidad</th>
+                            <th>Descripción</th>
+                            <th>No. Inventario</th>
+                            <th>Marca</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dat in data %}
+                        <tr>
+                            <td>{{ dat.2 }}</td>
+                            <td>{{ dat.3 }}</td>
+                            <td>{{ dat.4 }}</td>
+                            <td>{{ dat.5 }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <th class="border-dark">Fecha de préstamo</th>
+                            <th class="border-dark">Ubicación</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>{{ data[0][6] }}</td>
+                            <td>{{ data[0][7] }}</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12 text-center pb-5">
+                <div class="form-group pb-2">
+                    <small class="text-muted">Firmas</small>
+                </div>
+            </div>
+            <div class="col-3 text-center">
+                <p style="border-top: 1px solid rgb(100, 100, 100); color: rgb(100, 100, 100);">AUTORIZA</p>
+            </div>
+            <div class="col-3 text-center">
+                <p style="border-top: 1px solid rgb(100, 100, 100); color: rgb(100, 100, 100);">ENTERADO</p>
+            </div>
+            <div class="col-3 text-center">
+                <p style="border-top: 1px solid rgb(100, 100, 100); color: rgb(100, 100, 100);">ENTERADO</p>
+            </div>
+            <div class="col-3 text-center">
+                <p style="border-top: 1px solid rgb(100, 100, 100); color: rgb(100, 100, 100);">SOLICITANTE</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-6 text-left">
+            <img src="/static/img/PC SINEMS.png" height="70px">
+        </div>
+        <div class="col col-6 text-right">
+            <img src="/static/img/direccion.png" height="70px">
+        </div>
+    </div>
+</div>
+
+{% endblock %}

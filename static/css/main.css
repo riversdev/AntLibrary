@@ -1,0 +1,22 @@
+div.dataTables_wrapper {
+	width: 100%;
+	margin: 0 auto;
+}
+
+html,
+body {
+	min-height: 100vh;
+	/* background: url('../img/Fondo1.png') no-repeat; */
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+#padre {
+	min-height: 100vh;
+	min-width: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	vertical-align: middle;
+	text-align: center;
+}

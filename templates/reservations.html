@@ -1,0 +1,564 @@
+{% extends "layout.html" %}
+
+{% block reservations %}
+<script>
+    document.getElementById('linkNavReservations').className = 'active';
+    // document.body.style.background = 'url("{{ url_for("static", filename="img/chess.png") }}") no-repeat';
+    // document.body.style.backgroundAttachment = 'fixed';
+    // document.body.style.backgroundSize = 'cover';
+    document.body.classList.add('bg-dark');
+    document.addEventListener('DOMContentLoaded', function () {
+        //document.getElementById('btnDel').style.display = 'none';
+        $('#modalEvents').on('hidden.bs.modal', function () {
+            alertify.error("Cancelado");
+        });
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            height: $(window).height() * 0.86,
+            locale: 'es',
+            plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
+            header: {
+                left: 'prevYear,prev,next,nextYear today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            },
+            defaultDate: '{{ fechaActual }}',
+            navLinks: true, // can click day/week names to navigate views
+            editable: true,
+            selectable: true,
+            eventLimit: true, // allow "more" link when too many events
+            events: {
+                url: 'data',
+                error: function () {
+                    alert("Hay un Error");
+                }
+            },
+            eventClick: function (info) {
+                var cadInicio = JSON.stringify(info.event.start);
+                var cadFin = JSON.stringify(info.event.end);
+
+                // CRECION DE VECTORES DE LAS CADENAS QUE CONTIENEN FECHA Y HORA DE INICIO Y FIN
+                var vectorCadInicio = cadInicio.split("T");
+                var vectorCadFin = cadFin.split("T");
+
+                // CREANDO CADENAS DE FECHAS DE INICIO Y FIN
+                var cad_Inicio = vectorCadInicio[0];
+                var cad_Fin = vectorCadFin[0];
+
+                // CREANDO NUEVAS CADENAS PARA EL VALOR FINAL DE FECHAS
+                var fechaInicio = "";
+                var fechaFin = "";
+
+                // OBTENIENDO FECHA DE INICIO LIMPIA
+                for (let i = 0; i < cad_Inicio.length; i++) {
+                    if (cad_Inicio[i] != '"') {
+                        fechaInicio = fechaInicio + cad_Inicio[i];
+                    }
+                }
+                console.log("Fecha inicio: " + fechaInicio);
+
+                // OBTENIENDO FECHA DE FIN LIMPIA
+                for (let i = 0; i < cad_Fin.length; i++) {
+                    if (cad_Fin[i] != '"') {
+                        fechaFin = fechaFin + cad_Fin[i];
+                    }
+                }
+                console.log("Fecha fin: " + fechaFin);
+
+                // CREANDO CADENAS CON EL VALOR DE LOS VECTORES QUE CONTIENEN LAS HORAS DE INICIO Y FIN
+                var cad_HoraInicio = "";
+                var cad_HoraFin = "";
+                if (vectorCadInicio[1] != undefined) {
+                    cad_HoraInicio = vectorCadInicio[1];
+                } else {
+                    cad_HoraInicio = "00:00:00";
+                }
+                if (vectorCadFin[1] != undefined) {
+                    cad_HoraFin = vectorCadFin[1];
+                } else {
+                    cad_HoraFin = "00:00:00";
+                }
+
+                // CREANDO NUEVAS CADENAS PARA EL VALOR FINAL DE HORAS
+                var horaInicio = "";
+                var horaFin = "";
+
+                // OBTENIENDO HORA DE INICIO LIMPIA
+                for (let i = 0; i < 8; i++) {
+                    horaInicio = horaInicio + cad_HoraInicio[i];
+                }
+
+                // OBTENIENDO HORA DE FIN LIMPIA
+                for (let i = 0; i < 8; i++) {
+                    horaFin = horaFin + cad_HoraFin[i];
+                }
+
+                // RESTANDO LAS 5 HORAS DE MAS QUE FULLCALENDAR AGREGA AL EVENTO
+                hour = parseInt(horaInicio[0] + horaInicio[1]) - 5
+                console.log(">>>|" + hour);
+                console.log(">>>|" + horaInicio);
+                cadHour = ""
+                if (hour < 10) {
+                    cadHour = "0" + hour.toString()
+                } else {
+                    cadHour = hour.toString()
+                }
+                for (let i = 2; i < horaInicio.length; i++) {
+                    cadHour = cadHour + horaInicio[i]
+                }
+                console.log("Hora inicio: " + cadHour);
+
+                hour2 = parseInt(horaFin[0] + horaFin[1]) - 5
+                cadHour2 = ""
+                if (hour2 < 10) {
+                    cadHour2 = "0" + hour2.toString()
+                } else {
+                    cadHour2 = hour2.toString()
+                }
+                for (let i = 2; i < horaFin.length; i++) {
+                    cadHour2 = cadHour2 + horaFin[i]
+                }
+                console.log("Hora fin: " + cadHour2);
+
+                // ACCIONANDO EL MODAL DE EDICION CON LAS FECHAS Y HORAS DEL EVENTO
+                //console.log(info.event);
+                var f = document.getElementById("formReservations");
+                f.setAttribute("action", "/updateReservation/" + info.event.extendedProps.code);
+                document.getElementById("modalEventsTitle").innerHTML = info.event.title;
+                $('#dateLoan').val(fechaInicio);
+                $('#dateDelivery').val(fechaFin);
+                $('#hourLoan').val(cadHour);
+                $('#hourDelivery').val(cadHour2);
+                $('#name').val(info.event.extendedProps.name);
+                $('#department').val(info.event.extendedProps.department);
+                $('#conditionsInput').val(info.event.extendedProps.conditions);
+                $('#activities').val(info.event.title);
+                $('#inputColor').val(info.event.backgroundColor);
+                //document.getElementById('btnDel').style.display = 'block';
+                $("#modalEvents").modal('show');
+            },
+            select: function (info) {
+                // OBTENCION DE CADENAS CON LA FECHA Y HORA DE LA FUNCION SELECT
+                var cadInicio = JSON.stringify(info.startStr);
+                var cadFin = JSON.stringify(info.endStr);
+
+                // CRECION DE VECTORES DE LAS CADENAS QUE CONTIENEN FECHA Y HORA DE INICIO Y FIN
+                var vectorCadInicio = cadInicio.split("T");
+                var vectorCadFin = cadFin.split("T");
+
+                // CREANDO CADENAS DE FECHAS DE INICIO Y FIN
+                var cad_Inicio = vectorCadInicio[0];
+                var cad_Fin = vectorCadFin[0];
+
+                // CREANDO NUEVAS CADENAS PARA EL VALOR FINAL DE FECHAS
+                var fechaInicio = "";
+                var fechaFin = "";
+
+                // OBTENIENDO FECHA DE INICIO LIMPIA
+                for (let i = 0; i < cad_Inicio.length; i++) {
+                    if (cad_Inicio[i] != '"') {
+                        fechaInicio = fechaInicio + cad_Inicio[i];
+                    }
+                }
+                console.log("Fecha inicio: " + fechaInicio);
+
+                // OBTENIENDO FECHA DE FIN LIMPIA
+                for (let i = 0; i < cad_Fin.length; i++) {
+                    if (cad_Fin[i] != '"') {
+                        fechaFin = fechaFin + cad_Fin[i];
+                    }
+                }
+                console.log("Fecha fin: " + fechaFin);
+
+                // CREANDO CADENAS CON EL VALOR DE LOS VECTORES QUE CONTIENEN LAS HORAS DE INICIO Y FIN
+                var cad_HoraInicio = "";
+                var cad_HoraFin = "";
+                if (vectorCadInicio[1] != undefined) {
+                    cad_HoraInicio = vectorCadInicio[1];
+                } else {
+                    cad_HoraInicio = "00:00:00";
+                }
+                if (vectorCadFin[1] != undefined) {
+                    cad_HoraFin = vectorCadFin[1];
+                } else {
+                    cad_HoraFin = "00:00:00";
+                }
+
+                // CREANDO NUEVAS CADENAS PARA EL VALOR FINAL DE HORAS
+                var horaInicio = "";
+                var horaFin = "";
+
+                // OBTENIENDO HORA DE INICIO LIMPIA
+                for (let i = 0; i < 8; i++) {
+                    horaInicio = horaInicio + cad_HoraInicio[i];
+                }
+                console.log("Hora inicio: " + horaInicio);
+
+                // OBTENIENDO HORA DE FIN LIMPIA
+                for (let i = 0; i < 8; i++) {
+                    horaFin = horaFin + cad_HoraFin[i];
+                }
+                console.log("Hora fin: " + horaFin);
+
+                // ACCIONANDO EL MODAL DE REGISTRO CON LAS FECHAS Y HORAS DE LA SELECCION
+                var f = document.getElementById("formReservations");
+                f.setAttribute("action", "/addReservation");
+                document.getElementById("modalEventsTitle").innerHTML = "NUEVA RESERVACIÓN";
+                $('#dateLoan').val(fechaInicio);
+                $('#dateDelivery').val(fechaFin);
+                $('#hourLoan').val(horaInicio);
+                $('#hourDelivery').val(horaFin);
+                $('#name').val('');
+                $('#department').val('');
+                $('#conditionsInput').val('');
+                $('#activities').val('');
+                $('#color').val('');
+                $("#modalEvents").modal('show');
+            },
+            eventDrop: function (info) {
+                var cadInicio = JSON.stringify(info.event.start);
+                var cadFin = JSON.stringify(info.event.end);
+
+                // CRECION DE VECTORES DE LAS CADENAS QUE CONTIENEN FECHA Y HORA DE INICIO Y FIN
+                var vectorCadInicio = cadInicio.split("T");
+                var vectorCadFin = cadFin.split("T");
+
+                // CREANDO CADENAS DE FECHAS DE INICIO Y FIN
+                var cad_Inicio = vectorCadInicio[0];
+                var cad_Fin = vectorCadFin[0];
+
+                // CREANDO NUEVAS CADENAS PARA EL VALOR FINAL DE FECHAS
+                var fechaInicio = "";
+                var fechaFin = "";
+
+                // OBTENIENDO FECHA DE INICIO LIMPIA
+                for (let i = 0; i < cad_Inicio.length; i++) {
+                    if (cad_Inicio[i] != '"') {
+                        fechaInicio = fechaInicio + cad_Inicio[i];
+                    }
+                }
+                console.log("Fecha inicio: " + fechaInicio);
+
+                // OBTENIENDO FECHA DE FIN LIMPIA
+                for (let i = 0; i < cad_Fin.length; i++) {
+                    if (cad_Fin[i] != '"') {
+                        fechaFin = fechaFin + cad_Fin[i];
+                    }
+                }
+                console.log("Fecha fin: " + fechaFin);
+
+                // CREANDO CADENAS CON EL VALOR DE LOS VECTORES QUE CONTIENEN LAS HORAS DE INICIO Y FIN
+                var cad_HoraInicio = "";
+                var cad_HoraFin = "";
+                if (vectorCadInicio[1] != undefined) {
+                    cad_HoraInicio = vectorCadInicio[1];
+                } else {
+                    cad_HoraInicio = "00:00:00";
+                }
+                if (vectorCadFin[1] != undefined) {
+                    cad_HoraFin = vectorCadFin[1];
+                } else {
+                    cad_HoraFin = "00:00:00";
+                }
+
+                // CREANDO NUEVAS CADENAS PARA EL VALOR FINAL DE HORAS
+                var horaInicio = "";
+                var horaFin = "";
+
+                // OBTENIENDO HORA DE INICIO LIMPIA
+                for (let i = 0; i < 8; i++) {
+                    horaInicio = horaInicio + cad_HoraInicio[i];
+                }
+
+                // OBTENIENDO HORA DE FIN LIMPIA
+                for (let i = 0; i < 8; i++) {
+                    horaFin = horaFin + cad_HoraFin[i];
+                }
+
+                // RESTANDO LAS 5 HORAS DE MAS QUE FULLCALENDAR AGREGA AL EVENTO
+                hour = parseInt(horaInicio[0] + horaInicio[1]) - 5
+                console.log(">>>|" + hour);
+                console.log(">>>|" + horaInicio);
+                cadHour = ""
+                if (hour < 10) {
+                    cadHour = "0" + hour.toString()
+                } else {
+                    cadHour = hour.toString()
+                }
+                for (let i = 2; i < horaInicio.length; i++) {
+                    cadHour = cadHour + horaInicio[i]
+                }
+                console.log("Hora inicio: " + cadHour);
+
+                hour2 = parseInt(horaFin[0] + horaFin[1]) - 5
+                cadHour2 = ""
+                if (hour2 < 10) {
+                    cadHour2 = "0" + hour2.toString()
+                } else {
+                    cadHour2 = hour2.toString()
+                }
+                for (let i = 2; i < horaFin.length; i++) {
+                    cadHour2 = cadHour2 + horaFin[i]
+                }
+                console.log("Hora fin: " + cadHour2);
+
+                alertify
+                    .confirm(
+                        'Moviendo...',
+                        'Seguro de querer mover "' + info.event.title + '" a: ' + fechaInicio,
+                        function () {
+                            var f = document.getElementById("formReservations");
+                            f.setAttribute("action", "/updateReservation/" + info.event.extendedProps.code);
+                            $('#dateLoan').val(fechaInicio);
+                            $('#dateDelivery').val(fechaFin);
+                            $('#hourLoan').val(cadHour);
+                            $('#hourDelivery').val(cadHour2);
+                            $('#name').val(info.event.extendedProps.name);
+                            $('#department').val(info.event.extendedProps.department);
+                            $('#conditionsInput').val(info.event.extendedProps.conditions);
+                            $('#activities').val(info.event.title);
+                            $('#inputColor').val(info.event.backgroundColor);
+                            var btnSend = document.getElementById("send");
+                            btnSend.click();
+                        },
+                        function () {
+                            info.revert();
+                            alertify.error('Cancelado');
+                        }
+                    )
+                    .set({ transition: 'zoom' });
+
+            },
+            eventResize: function (info) {
+                var cadInicio = JSON.stringify(info.event.start);
+                var cadFin = JSON.stringify(info.event.end);
+
+                // CRECION DE VECTORES DE LAS CADENAS QUE CONTIENEN FECHA Y HORA DE INICIO Y FIN
+                var vectorCadInicio = cadInicio.split("T");
+                var vectorCadFin = cadFin.split("T");
+
+                // CREANDO CADENAS DE FECHAS DE INICIO Y FIN
+                var cad_Inicio = vectorCadInicio[0];
+                var cad_Fin = vectorCadFin[0];
+
+                // CREANDO NUEVAS CADENAS PARA EL VALOR FINAL DE FECHAS
+                var fechaInicio = "";
+                var fechaFin = "";
+
+                // OBTENIENDO FECHA DE INICIO LIMPIA
+                for (let i = 0; i < cad_Inicio.length; i++) {
+                    if (cad_Inicio[i] != '"') {
+                        fechaInicio = fechaInicio + cad_Inicio[i];
+                    }
+                }
+                console.log("Fecha inicio: " + fechaInicio);
+
+                // OBTENIENDO FECHA DE FIN LIMPIA
+                for (let i = 0; i < cad_Fin.length; i++) {
+                    if (cad_Fin[i] != '"') {
+                        fechaFin = fechaFin + cad_Fin[i];
+                    }
+                }
+                console.log("Fecha fin: " + fechaFin);
+
+                // CREANDO CADENAS CON EL VALOR DE LOS VECTORES QUE CONTIENEN LAS HORAS DE INICIO Y FIN
+                var cad_HoraInicio = "";
+                var cad_HoraFin = "";
+                if (vectorCadInicio[1] != undefined) {
+                    cad_HoraInicio = vectorCadInicio[1];
+                } else {
+                    cad_HoraInicio = "00:00:00";
+                }
+                if (vectorCadFin[1] != undefined) {
+                    cad_HoraFin = vectorCadFin[1];
+                } else {
+                    cad_HoraFin = "00:00:00";
+                }
+
+                // CREANDO NUEVAS CADENAS PARA EL VALOR FINAL DE HORAS
+                var horaInicio = "";
+                var horaFin = "";
+
+                // OBTENIENDO HORA DE INICIO LIMPIA
+                for (let i = 0; i < 8; i++) {
+                    horaInicio = horaInicio + cad_HoraInicio[i];
+                }
+
+                // OBTENIENDO HORA DE FIN LIMPIA
+                for (let i = 0; i < 8; i++) {
+                    horaFin = horaFin + cad_HoraFin[i];
+                }
+
+                // RESTANDO LAS 5 HORAS DE MAS QUE FULLCALENDAR AGREGA AL EVENTO
+                hour = parseInt(horaInicio[0] + horaInicio[1]) - 5
+                console.log(">>>|" + hour);
+                console.log(">>>|" + horaInicio);
+                cadHour = ""
+                if (hour < 10) {
+                    cadHour = "0" + hour.toString()
+                } else {
+                    cadHour = hour.toString()
+                }
+                for (let i = 2; i < horaInicio.length; i++) {
+                    cadHour = cadHour + horaInicio[i]
+                }
+                console.log("Hora inicio: " + cadHour);
+
+                hour2 = parseInt(horaFin[0] + horaFin[1]) - 5
+                cadHour2 = ""
+                if (hour2 < 10) {
+                    cadHour2 = "0" + hour2.toString()
+                } else {
+                    cadHour2 = hour2.toString()
+                }
+                for (let i = 2; i < horaFin.length; i++) {
+                    cadHour2 = cadHour2 + horaFin[i]
+                }
+                console.log("Hora fin: " + cadHour2);
+
+                alertify
+                    .confirm(
+                        'Ampliando...',
+                        'Seguro de querer ampliar "' + info.event.title + '" a: ' + fechaFin + ", " + cadHour2,
+                        function () {
+                            var f = document.getElementById("formReservations");
+                            f.setAttribute("action", "/updateReservation/" + info.event.extendedProps.code);
+                            $('#dateLoan').val(fechaInicio);
+                            $('#dateDelivery').val(fechaFin);
+                            $('#hourLoan').val(cadHour);
+                            $('#hourDelivery').val(cadHour2);
+                            $('#name').val(info.event.extendedProps.name);
+                            $('#department').val(info.event.extendedProps.department);
+                            $('#conditionsInput').val(info.event.extendedProps.conditions);
+                            $('#activities').val(info.event.title);
+                            $('#inputColor').val(info.event.backgroundColor);
+                            var btnSend = document.getElementById("send");
+                            btnSend.click();
+                        },
+                        function () {
+                            info.revert();
+                            alertify.error('Cancelado');
+                        }
+                    )
+                    .set({ transition: 'zoom' });
+            }
+        });
+
+        calendar.render();
+    });
+</script>
+
+<div class="container pt-3">
+    <div class="card">
+        <div id='calendar' class="p-1 text-primary bg-secondary"></div>
+    </div>
+</div>
+
+<!-- Modal Events -->
+<div class="modal fade" id="modalEvents" tabindex="-1" role="dialog" aria-labelledby="modalEvents" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white" id="modalEventsTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="text-white" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formReservations" method="POST">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-row">
+                                <div class="input-group mb-3 col-8">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon3"
+                                            style="background-color: #E6E6E6;">Inicio</span>
+                                    </div>
+                                    <input type="date" name="dateLoan" id="dateLoan" class="form-control" required
+                                        style="background-color: #F2F2F2;">
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <input type="time" name="hourLoan" id="hourLoan"
+                                            class="form-control text-center" required
+                                            style="background-color: #F2F2F2;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-row">
+                                <div class="input-group mb-3 col-8">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon3"
+                                            style="background-color: #E6E6E6;"> Fin </span>
+                                    </div>
+                                    <input type="date" name="dateDelivery" id="dateDelivery" class="form-control"
+                                        required style="background-color: #F2F2F2;">
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <input type="time" name="hourDelivery" id="hourDelivery"
+                                            class="form-control text-center" required
+                                            style="background-color: #F2F2F2;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-row">
+                                <div class="col-7">
+                                    <div class="form-group">
+                                        <input type="text" name="name" id="name" class="form-control text-center"
+                                            placeholder="Nombre del responsable" required data-toggle="tooltip"
+                                            data-placement="top" title="Nombre del responsable"
+                                            data-original-title="Nombre del responsable"
+                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+' style="background-color:#F2F2F2;">
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div class="form-group">
+                                        <input type="text" name="department" id="department"
+                                            class="form-control text-center" placeholder="Departamento" required
+                                            pattern='[a-zA-Z0-9 áéíóúÁÉÍÓÚ.?¡¿!-"#]+' style="background-color:#F2F2F2;"
+                                            data-toggle="tooltip" data-placement="top" title="Departamento">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <input class="form-control text-center" id="conditionsInput" name="conditionsInput"
+                                    required placeholder="Condiciones de la sala audiovisual..."
+                                    style="background-color:#F2F2F2;" data-toggle="tooltip" data-placement="top"
+                                    title="Condiciones de entrega" data-original-title="Condiciones de entrega">
+                            </div>
+                        </div>
+                        <div class="col-12 input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="background-color: #E6E6E6;">Actividades</span>
+                            </div>
+                            <textarea class="form-control" id="activities" name="activities" required
+                                placeholder="Actividades a realizar..." style="background-color:#F2F2F2;"></textarea>
+                        </div>
+                        <div class="col-12 input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="background-color: #E6E6E6;">Color</span>
+                            </div>
+                            <input class="form-control" type="color" name="inputColor" id="inputColor" required
+                                data-toggle="tooltip" data-placement="top" title="Seleccione un color para el evento"
+                                style="background-color:#F2F2F2;">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnCerrarModal" type="button" class="btn btn-danger"
+                        data-dismiss="modal">Cerrar</button>
+                    <button id="send" type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
